@@ -67,7 +67,7 @@ li.task{border-top:1px solid var(--line)}
 .title{font-weight:700;line-height:1.35}
 li[data-s="terminado"] .title{text-decoration:line-through;text-decoration-thickness:1px;color:var(--muted)}
 .sub{font-size:13px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.pr{text-transform:capitalize;font:700 11px/1 var(--font);padding:4px 7px;border-radius:99px;letter-spacing:.02em}
+.pr{font:700 11px/1 var(--font);padding:4px 7px;border-radius:99px;letter-spacing:.02em}
 .pr.alta{color:var(--alta);background:var(--alta-bg)} .pr.media{color:var(--media);background:var(--media-bg)} .pr.baja{color:var(--baja);background:var(--baja-bg)}
 .url{font:500 12px/1.3 var(--mono);overflow-wrap:anywhere}
 .state{font:700 12.5px/1 var(--font);padding:6px 9px;border-radius:7px;white-space:nowrap;color:var(--muted);background:var(--hover)}
@@ -465,7 +465,7 @@ hecho:"Ambos contenidos publicados."}
           <span class="num">${n}</span>
           <button class="what" type="button" data-toggle="${id}" aria-expanded="${isOpen}">
             <span class="title">${esc(t.titulo)}</span>
-            <span class="sub"><span class="pr ${PR[t.p][0]}">${PR[t.p][0]}</span><span>${esc(t.esfuerzo)}</span>${t.url?`<span class="url">${esc(t.url)}</span>`:""}<span class="chev">›</span></span>
+            <span class="sub"><span class="pr ${PR[t.p][0]}">Prioridad ${PR[t.p][0]}</span><span>Esfuerzo ${esc(t.esfuerzo.charAt(0).toLowerCase()+t.esfuerzo.slice(1))}</span>${t.url?`<span class="url">${esc(t.url)}</span>`:""}<span class="chev">›</span></span>
           </button>
           <span class="state">${ST[s]}</span>
         </div>
