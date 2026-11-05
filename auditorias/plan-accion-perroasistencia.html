@@ -1,165 +1,131 @@
 <title>Plan de acción Perro Asistencia</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Layout: tablero de tareas en una columna; resumen de avance arriba, filtros fijos, bloques P1→P3 divididos en Desarrollo y SEO */
+/* Layout: lista de tareas de una columna, estrecha y limpia; pestañas SEO / Programación; casilla de estado a la izquierda de cada fila */
 :root{
-  --bg:#f6f8f7; --surface:#ffffff; --fg:#17211d; --muted:#5b6b64; --line:#d9e2de;
-  --accent:#1f6b52; --accent-soft:#e3f0ea; --head:#0f3b2e; --head-fg:#eef6f2;
-  --p1:#b42318; --p1-bg:#fde8e6; --p2:#9a6400; --p2-bg:#fff3d6; --p3:#1f6b52; --p3-bg:#e3f0ea;
-  --dev:#3949ab; --dev-bg:#e8eaf8; --seo:#8e3b8a; --seo-bg:#f6e6f5;
-  --st-pend:#6b7a74; --st-pend-bg:#eef2f0; --st-prog:#1d5fbf; --st-prog-bg:#e3edfb; --st-done:#1f7a45; --st-done-bg:#dff3e7;
-  --code-bg:#eef2f0;
-  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
-  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --bg:#f7f7f4; --card:#ffffff; --fg:#1c1f1d; --muted:#6a706b; --line:#e4e5e0; --hover:#f1f2ee;
+  --accent:#2d6a4f;
+  --alta:#c0392b; --alta-bg:#fbe9e7; --media:#a86b00; --media-bg:#fdf1d8; --baja:#3d6f8e; --baja-bg:#e5eef4;
+  --prog:#2563c9; --prog-bg:#e6eefb; --done:#2d6a4f; --done-bg:#e2f0e8;
+  --code:#f0f1ec;
+  --font:"Manrope", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0f1513; --surface:#161e1b; --fg:#e4ece8; --muted:#9db0a8; --line:#2a3833;
-  --accent:#6cc9a3; --accent-soft:#1d3029; --head:#0b2a21; --head-fg:#e4f2ec;
-  --p1:#ff8a80; --p1-bg:#3a1a18; --p2:#f2c25b; --p2-bg:#3a2e12; --p3:#6cc9a3; --p3-bg:#1d3029;
-  --dev:#9fa8ff; --dev-bg:#232845; --seo:#e59ae0; --seo-bg:#3a2238;
-  --st-pend:#a9b8b2; --st-pend-bg:#222c29; --st-prog:#8ab6ff; --st-prog-bg:#1b2a44; --st-done:#7fd8a3; --st-done-bg:#183326;
-  --code-bg:#1d2724; color-scheme:dark}}
+  --bg:#141615; --card:#1b1e1c; --fg:#e8eae7; --muted:#9aa09b; --line:#2b2f2c; --hover:#222623;
+  --accent:#7cc8a0;
+  --alta:#ff8f80; --alta-bg:#3a1f1c; --media:#f0c060; --media-bg:#382c14; --baja:#8cc0e0; --baja-bg:#1c2b36;
+  --prog:#86aef5; --prog-bg:#1d2a42; --done:#7cc8a0; --done-bg:#1b3127;
+  --code:#232724; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0f1513; --surface:#161e1b; --fg:#e4ece8; --muted:#9db0a8; --line:#2a3833;
-  --accent:#6cc9a3; --accent-soft:#1d3029; --head:#0b2a21; --head-fg:#e4f2ec;
-  --p1:#ff8a80; --p1-bg:#3a1a18; --p2:#f2c25b; --p2-bg:#3a2e12; --p3:#6cc9a3; --p3-bg:#1d3029;
-  --dev:#9fa8ff; --dev-bg:#232845; --seo:#e59ae0; --seo-bg:#3a2238;
-  --st-pend:#a9b8b2; --st-pend-bg:#222c29; --st-prog:#8ab6ff; --st-prog-bg:#1b2a44; --st-done:#7fd8a3; --st-done-bg:#183326;
-  --code-bg:#1d2724; color-scheme:dark}
+  --bg:#141615; --card:#1b1e1c; --fg:#e8eae7; --muted:#9aa09b; --line:#2b2f2c; --hover:#222623;
+  --accent:#7cc8a0;
+  --alta:#ff8f80; --alta-bg:#3a1f1c; --media:#f0c060; --media-bg:#382c14; --baja:#8cc0e0; --baja-bg:#1c2b36;
+  --prog:#86aef5; --prog-bg:#1d2a42; --done:#7cc8a0; --done-bg:#1b3127;
+  --code:#232724; color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body)}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-header.top{background:var(--head);color:var(--head-fg)}
-header.top .wrap{padding-block:32px 26px;display:grid;gap:8px}
-.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.8}
-h1{font:800 clamp(28px,4.6vw,44px)/1.05 var(--display);margin:0;text-wrap:balance}
-.sub{margin:0;max-width:72ch;opacity:.9}
-.sync{display:inline-flex;align-items:center;gap:8px;font:600 13px/1.3 var(--mono);opacity:.9;margin-top:4px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--st-pend)}
-.sync.ok .dot{background:#6cc9a3} .sync.local .dot{background:#f2c25b}
+body{background:var(--bg);color:var(--fg);font:15.5px/1.55 var(--font)}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{padding-block:36px 8px}
+h1{font-weight:800;font-size:clamp(26px,4vw,34px);line-height:1.15;margin:0 0 6px;letter-spacing:-.015em;text-wrap:balance}
+.lead{margin:0;color:var(--muted);max-width:62ch}
 
-.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-block:22px 4px}
-.sum{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:8px;min-width:0}
-.sum h2{margin:0;font:600 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.big{font:800 30px/1 var(--display);font-variant-numeric:tabular-nums}
-.big small{font:600 14px/1 var(--body);color:var(--muted);margin-left:6px}
-.bar{height:8px;border-radius:99px;background:var(--st-pend-bg);overflow:hidden;display:flex}
-.bar i{display:block;height:100%}
-.bar .d{background:var(--st-done)} .bar .g{background:var(--st-prog)}
-.rows{display:grid;gap:6px;font-size:14px}
-.row{display:grid;grid-template-columns:92px 1fr 54px;gap:10px;align-items:center}
-.row span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.tabs{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+.tab{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--fg);font:700 15px/1 var(--font);padding:12px 16px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px}
+.tab .n{font:500 12px/1 var(--mono);color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tab[aria-selected="true"] .n{color:inherit;opacity:.75}
 
-.filters{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-top:18px}
-.filters .wrap{display:flex;flex-wrap:wrap;gap:10px 22px;padding-block:10px;align-items:center}
-.fgroup{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.fgroup > span{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:2px}
-.chipbtn{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 13.5px/1 var(--body);padding:7px 11px;border-radius:99px;cursor:pointer}
-.chipbtn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.progress{display:flex;align-items:center;gap:14px;margin:18px 0 6px;flex-wrap:wrap}
+.track{flex:1 1 220px;height:8px;border-radius:99px;background:var(--line);overflow:hidden;display:flex}
+.track i{height:100%;display:block;transition:width .25s}
+.track .d{background:var(--done)} .track .p{background:var(--prog)}
+.ptext{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ptext b{color:var(--fg)}
+.note{font-size:12.5px;color:var(--muted);margin:0 0 14px}
 
-main{padding-block:12px 64px}
-.prio{margin-top:34px}
-.prio-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--fg);padding-bottom:8px}
-.prio-head h2{margin:0;font:800 26px/1.15 var(--display)}
-.prio-head p{margin:0;color:var(--muted);font-size:14.5px}
-.group{margin-top:18px}
-.group-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.group-head h3{margin:0;font:700 17px/1.2 var(--body)}
-.group-head .count{font:600 12px/1 var(--mono);color:var(--muted)}
-.list{display:grid;gap:10px}
-.empty{color:var(--muted);font-size:14px;padding:6px 2px}
+.howto{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-bottom:10px}
+.howto span{display:inline-flex;align-items:center;gap:6px}
 
-.task{background:var(--surface);border:1px solid var(--line);border-radius:10px;min-width:0}
-.task[data-estado="progreso"]{border-color:color-mix(in srgb,var(--st-prog) 45%,var(--line))}
-.task[data-estado="terminado"] .t-title{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px}
-.t-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 16px;padding:14px 16px;align-items:start}
-.t-id{font:600 12.5px/1 var(--mono);color:var(--muted)}
-.t-title{font:700 16.5px/1.3 var(--body);margin:4px 0 6px}
-.t-url{font:400 12.5px/1.3 var(--mono);color:var(--muted);overflow-wrap:anywhere;margin-bottom:6px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font:600 11.5px/1 var(--mono);padding:4px 7px;border-radius:99px;background:var(--code-bg);color:var(--muted);white-space:nowrap}
-.chip.p1{color:var(--p1);background:var(--p1-bg)} .chip.p2{color:var(--p2);background:var(--p2-bg)} .chip.p3{color:var(--p3);background:var(--p3-bg)}
-.chip.dev{color:var(--dev);background:var(--dev-bg)} .chip.seo{color:var(--seo);background:var(--seo-bg)}
-.chip.warn{color:var(--p2);background:var(--p2-bg)}
-.status{display:grid;gap:6px;justify-items:end}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.seg button{appearance:none;border:0;background:var(--surface);color:var(--muted);font:600 13px/1 var(--body);padding:8px 10px;cursor:pointer;white-space:nowrap}
-.seg button + button{border-left:1px solid var(--line)}
-.seg button[aria-pressed="true"][data-v="pendiente"]{background:var(--st-pend-bg);color:var(--st-pend)}
-.seg button[aria-pressed="true"][data-v="progreso"]{background:var(--st-prog-bg);color:var(--st-prog)}
-.seg button[aria-pressed="true"][data-v="terminado"]{background:var(--st-done-bg);color:var(--st-done)}
-.seg button:disabled{cursor:not-allowed;opacity:.7}
-.who{font-size:12px;color:var(--muted);text-align:right;min-height:1em}
-details{border-top:1px solid var(--line)}
-summary{cursor:pointer;padding:10px 16px;font:600 14px/1.2 var(--body);color:var(--accent);list-style:none}
-summary::-webkit-details-marker{display:none}
-summary::before{content:"▸";display:inline-block;margin-right:8px;transition:transform .15s}
-details[open] summary::before{transform:rotate(90deg)}
-.t-body{padding:0 16px 16px;display:grid;gap:12px}
-.kv{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 14px;font-size:14.5px}
-.kv dt{color:var(--muted);font-weight:600}
-.kv dd{margin:0}
-.t-body h4{margin:4px 0 0;font:700 14px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.t-body ol{margin:0;padding-left:22px;display:grid;gap:6px;max-width:80ch}
-code{font:13px/1.4 var(--mono);background:var(--code-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
-.codewrap{position:relative}
-pre{margin:0;background:var(--code-bg);padding:14px 16px;padding-right:80px;border-radius:8px;overflow-x:auto;font:12.5px/1.5 var(--mono)}
-.copy{position:absolute;top:8px;right:8px;appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 12px/1 var(--body);padding:6px 9px;border-radius:6px;cursor:pointer}
-.done-crit{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:14.5px}
-.done-crit b{font-weight:700}
-footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
-footer .wrap{padding-block:18px 30px}
-@media (max-width:720px){
-  .t-top{grid-template-columns:minmax(0,1fr)}
-  .status{justify-items:start}
-  .who{text-align:left}
-  .kv{grid-template-columns:minmax(0,1fr)}
-  .kv dd{margin-bottom:6px}
+ol.tasks{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.sep{padding:10px 18px;font:800 12px/1 var(--font);letter-spacing:.08em;text-transform:uppercase;background:var(--hover);border-top:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.sep:first-child{border-top:0}
+.sep .sw{width:8px;height:8px;border-radius:50%}
+li.task{border-top:1px solid var(--line)}
+.sep + li.task{border-top:0}
+.row{display:grid;grid-template-columns:auto 30px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 18px}
+.box{appearance:none;width:26px;height:26px;border-radius:7px;border:2px solid var(--muted);background:var(--card);cursor:pointer;display:grid;place-items:center;padding:0;color:#fff}
+.box svg{width:16px;height:16px;display:none}
+.box[data-s="progreso"]{border-color:var(--prog);background:var(--prog-bg)}
+.box[data-s="progreso"] .half{display:block;color:var(--prog)}
+.box[data-s="terminado"]{border-color:var(--done);background:var(--done)}
+.box[data-s="terminado"] .tick{display:block;color:var(--card)}
+.num{font:500 13px/1 var(--mono);color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.what{min-width:0;appearance:none;border:0;background:none;color:inherit;font:inherit;text-align:left;padding:0;cursor:pointer;display:grid;gap:3px}
+.title{font-weight:700;line-height:1.35}
+li[data-s="terminado"] .title{text-decoration:line-through;text-decoration-thickness:1px;color:var(--muted)}
+.sub{font-size:13px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pr{text-transform:capitalize;font:700 11px/1 var(--font);padding:4px 7px;border-radius:99px;letter-spacing:.02em}
+.pr.alta{color:var(--alta);background:var(--alta-bg)} .pr.media{color:var(--media);background:var(--media-bg)} .pr.baja{color:var(--baja);background:var(--baja-bg)}
+.url{font:500 12px/1.3 var(--mono);overflow-wrap:anywhere}
+.state{font:700 12.5px/1 var(--font);padding:6px 9px;border-radius:7px;white-space:nowrap;color:var(--muted);background:var(--hover)}
+li[data-s="progreso"] .state{color:var(--prog);background:var(--prog-bg)}
+li[data-s="terminado"] .state{color:var(--done);background:var(--done-bg)}
+.chev{display:inline-block;transition:transform .15s;color:var(--muted)}
+li.open .chev{transform:rotate(90deg)}
+
+.detail{padding:0 18px 18px calc(18px + 26px + 12px + 30px + 12px);display:grid;gap:12px;font-size:14.5px}
+.detail[hidden]{display:none}
+.meta{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;margin:0}
+.meta dt{color:var(--muted);font-weight:600}
+.meta dd{margin:0}
+.detail h3{margin:2px 0 0;font:800 12px/1 var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.detail ol{margin:0;padding-left:20px;display:grid;gap:6px}
+code{font:12.5px/1.4 var(--mono);background:var(--code);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.cw{position:relative}
+pre{margin:0;background:var(--code);padding:12px 14px;padding-right:84px;border-radius:8px;overflow-x:auto;font:12px/1.5 var(--mono)}
+.copy{position:absolute;top:8px;right:8px;appearance:none;border:1px solid var(--line);background:var(--card);color:var(--fg);font:700 12px/1 var(--font);padding:6px 9px;border-radius:6px;cursor:pointer}
+.ok{background:var(--done-bg);border-radius:8px;padding:10px 12px}
+.warnb{background:var(--media-bg);color:var(--fg);border-radius:8px;padding:8px 12px;font-size:13.5px}
+.choose{display:flex;gap:6px;flex-wrap:wrap}
+.choose button{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--fg);font:700 13px/1 var(--font);padding:8px 11px;border-radius:8px;cursor:pointer}
+.choose button[aria-pressed="true"][data-v="pendiente"]{background:var(--hover);border-color:var(--muted)}
+.choose button[aria-pressed="true"][data-v="progreso"]{background:var(--prog-bg);color:var(--prog);border-color:var(--prog)}
+.choose button[aria-pressed="true"][data-v="terminado"]{background:var(--done-bg);color:var(--done);border-color:var(--done)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row:hover{background:var(--hover)}
+footer{padding-block:20px 40px;color:var(--muted);font-size:12.5px}
+@media (max-width:600px){
+  .row{grid-template-columns:auto minmax(0,1fr) ;gap:10px;padding:12px 14px}
+  .num{display:none}
+  .state{grid-column:2;justify-self:start}
+  .detail{padding:0 14px 16px 14px}
 }
-@media (prefers-reduced-motion:reduce){summary::before{transition:none}}
+@media (prefers-reduced-motion:reduce){.chev,.track i{transition:none}}
 </style>
 
-<header class="top">
-  <div class="wrap">
-    <div class="eyebrow">perroasistencia.es · plan de acción SEO</div>
-    <h1>Plan de acción por prioridades</h1>
-    <p class="sub">60 tareas ordenadas de P1 (inmediata) a P3 (medio plazo) y separadas entre desarrollo/programación y SEO. Abre cada tarea para ver los pasos y marca su estado: pendiente, en progreso o terminado.</p>
-    <div class="sync" id="sync"><span class="dot"></span><span id="syncText">Conectando con el estado compartido…</span></div>
+<header class="wrap">
+  <h1>Plan de acción · perroasistencia.es</h1>
+  <p class="lead">Tareas ordenadas por prioridad: la nº 1 es la primera que hay que hacer. Pulsa la casilla para cambiar el estado y pulsa el título para ver los pasos.</p>
+  <div class="tabs" role="tablist" aria-label="Responsable">
+    <button class="tab" role="tab" id="tab-seo" data-a="seo" aria-selected="true">SEO <span class="n" id="n-seo"></span></button>
+    <button class="tab" role="tab" id="tab-dev" data-a="dev" aria-selected="false">Programación <span class="n" id="n-dev"></span></button>
   </div>
 </header>
 
-<div class="wrap">
-  <div class="summary" id="summary"></div>
-</div>
-
-<div class="filters">
-  <div class="wrap">
-    <div class="fgroup" role="group" aria-label="Filtrar por responsable">
-      <span>Responsable</span>
-      <button class="chipbtn" data-f="area" data-v="todas" aria-pressed="true">Todas</button>
-      <button class="chipbtn" data-f="area" data-v="dev" aria-pressed="false">Desarrollo</button>
-      <button class="chipbtn" data-f="area" data-v="seo" aria-pressed="false">SEO</button>
-    </div>
-    <div class="fgroup" role="group" aria-label="Filtrar por estado">
-      <span>Estado</span>
-      <button class="chipbtn" data-f="estado" data-v="todos" aria-pressed="true">Todos</button>
-      <button class="chipbtn" data-f="estado" data-v="pendiente" aria-pressed="false">Pendiente</button>
-      <button class="chipbtn" data-f="estado" data-v="progreso" aria-pressed="false">En progreso</button>
-      <button class="chipbtn" data-f="estado" data-v="terminado" aria-pressed="false">Terminado</button>
-    </div>
+<main class="wrap">
+  <div class="progress"><div class="track" id="track"><i class="d"></i><i class="p"></i></div><div class="ptext" id="ptext"></div></div>
+  <p class="note" id="note">Cargando…</p>
+  <div class="howto" aria-hidden="true">
+    <span><span class="box" style="pointer-events:none"></span> Pendiente</span>
+    <span><span class="box" data-s="progreso" style="pointer-events:none"><svg class="half" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="2.5" rx="1.2" fill="currentColor"/></svg></span> En progreso</span>
+    <span><span class="box" data-s="terminado" style="pointer-events:none"><svg class="tick" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Finalizada</span>
   </div>
-</div>
-
-<main class="wrap" id="main"></main>
-
-<footer><div class="wrap">Basado en la auditoría técnica y on-page de octubre de 2026 (GSC, GA4, DinoRank y rastreo propio). El estado de cada tarea se comparte con todas las personas que tienen acceso a esta página.</div></footer>
+  <ol class="tasks" id="list" role="tabpanel"></ol>
+</main>
+<footer class="wrap">Basado en la auditoría técnica y SEO on-page de octubre de 2026 (Search Console, GA4, DinoRank y rastreo propio).</footer>
 
 <script>
 // Datos del plan de acción. area: "dev" = desarrollo/programación, "seo" = SEO/redacción.
@@ -167,7 +133,7 @@ const TAREAS = [
 // ───────────── P1 · DESARROLLO ─────────────
 {id:"T1.1",p:1,area:"dev",titulo:"Configurar Consent Mode v2 en GA4",esfuerzo:"Bajo · 2 h",plazo:"Semana 1",impacto:"Muy alto: GA4 pasa de medir ~20 % a ~90 % del tráfico.",depende:"—",
 pasos:["Revisar el plugin de cookies: no debe bloquear `gtag.js` por completo antes del consentimiento.","Cargar el tag de GA4 siempre, con el estado de consentimiento por defecto en `denied` (código abajo), antes del snippet de gtag.","En el callback de «Aceptar» del banner, llamar a `gtag('consent','update',{analytics_storage:'granted', ad_storage:'granted', ad_user_data:'granted', ad_personalization:'granted'})`.","Comprobar con Tag Assistant el estado antes y después de aceptar."],
-codigo:`<script>
+codigo:`<\script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('consent','default',{
@@ -175,8 +141,8 @@ gtag('consent','default',{
   ad_user_data:'denied', ad_personalization:'denied',
   wait_for_update: 500
 });
-</script>
-<!-- después: gtag.js + gtag('config','G-XXXX') -->`,
+<\/script>
+<\!-- después: gtag.js + gtag('config','G-XXXX') -->`,
 hecho:"Tag Assistant muestra el consentimiento correcto antes y después de aceptar."},
 
 {id:"T1.2",p:1,area:"dev",titulo:"Crear eventos de conversión (teléfono, WhatsApp, formulario)",esfuerzo:"Bajo · 2 h",plazo:"Semana 1",impacto:"Muy alto: medir los leads por primera vez.",depende:"T1.1",
@@ -458,201 +424,142 @@ hecho:"Ambos contenidos publicados."}
 ];
 
 (function(){
-  const PRIO = {
-    1:{t:"Prioridad 1 · inmediata", d:"Bloquean la medición o el rastreo, o dan resultado rápido. Semanas 1–4."},
-    2:{t:"Prioridad 2 · corto plazo", d:"Arquitectura, landings y optimización de páginas en posiciones 6–20. Semanas 3–12."},
-    3:{t:"Prioridad 3 · medio plazo", d:"Consolidación de contenido, páginas nuevas y mantenimiento. Meses 2–8."}
+  // Orden de ejecución recomendado (de primero a último) en cada lista.
+  const ORDEN = {
+    seo:["S1.1","S1.2","S1.3","S1.4","S1.5","S1.6","S1.8","S1.7","S1.9","S1.10","S2.2","S2.1","S2.5","S2.3","S2.4","S2.6","S2.8","S2.7","S2.9","S2.10","S3.3","S3.1","S3.2","S3.4","S3.5","S3.7","S3.8","S3.6","S3.9"],
+    dev:["T1.1","T1.2","T5.1","T4.1","T2.1","T2.2","T2.3","T2.4","T3.1","T6.1","T6.2","T6.3","T1.3","T3.2","T10.1","T7.1","T7.2","T8.1","T8.2","T6.4","T9.1","T9.3","T9.2","T1.4","T11.1","T11.3","T11.2","T11.4","T2.5","T10.2","T10.3"]
   };
-  const AREA = {dev:"Desarrollo / programación", seo:"SEO / contenidos"};
-  const EST = {pendiente:"Pendiente", progreso:"En progreso", terminado:"Terminado"};
-  const filtro = {area:"todas", estado:"todos"};
-  const estados = {};       // id -> {estado, por, at}
-  let db = null, user = null, canWrite = true, modo = "cargando";
-  const LS = "pa-estados-v1";
+  const BY = Object.fromEntries(TAREAS.map(t=>[t.id,t]));
+  const PR = {1:["alta","Prioridad alta"],2:["media","Prioridad media"],3:["baja","Prioridad baja"]};
+  const ST = {pendiente:"Pendiente",progreso:"En progreso",terminado:"Finalizada"};
+  const NEXT = {pendiente:"progreso",progreso:"terminado",terminado:"pendiente"};
+  const LS = "pa2-estados";
+  const estados = {};
+  let area = "seo", db = null, me = null, writable = true, shared = false;
 
-  function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
-  function inline(s){return esc(s).replace(/`([^`]+)`/g,"<code>$1</code>");}
-  function est(id){return (estados[id] && estados[id].estado) || "pendiente";}
+  const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const inl = s=>esc(s).replace(/`([^`]+)`/g,"<code>$1</code>");
+  const st = id=>(estados[id]&&ST[estados[id].estado])?estados[id].estado:"pendiente";
+  const HALF='<svg class="half" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="2.5" rx="1.2" fill="currentColor"/></svg>';
+  const TICK='<svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-  // ---------- render estático (una vez) ----------
-  const main = document.getElementById("main");
-  [1,2,3].forEach(p=>{
-    const sec = document.createElement("section");
-    sec.className = "prio"; sec.dataset.p = p;
-    sec.innerHTML = `<div class="prio-head"><h2>${PRIO[p].t}</h2><p>${PRIO[p].d}</p></div>`;
-    ["dev","seo"].forEach(a=>{
-      const tareas = TAREAS.filter(t=>t.p===p && t.area===a);
-      const g = document.createElement("div");
-      g.className="group"; g.dataset.area=a;
-      g.innerHTML = `<div class="group-head"><span class="chip ${a}">${a==="dev"?"DEV":"SEO"}</span><h3>${AREA[a]}</h3><span class="count"></span></div><div class="list"></div><div class="empty" hidden>No hay tareas con este filtro.</div>`;
-      const list = g.querySelector(".list");
-      tareas.forEach(t=>list.appendChild(card(t)));
-      sec.appendChild(g);
-    });
-    main.appendChild(sec);
-  });
+  try{ const a=localStorage.getItem("pa2-tab"); if(a==="seo"||a==="dev") area=a; }catch(e){}
+  try{ Object.assign(estados, JSON.parse(localStorage.getItem(LS)||"{}")); }catch(e){}
 
-  function card(t){
-    const el = document.createElement("article");
-    el.className="task"; el.id="tarea-"+t.id.replace(".","-"); el.dataset.id=t.id; el.dataset.area=t.area;
-    const pasos = t.pasos.map(s=>`<li>${inline(s)}</li>`).join("");
-    const code = t.codigo ? `<div class="codewrap"><pre><code>${esc(t.codigo)}</code></pre><button class="copy" type="button">Copiar</button></div>` : "";
-    el.innerHTML = `
-      <div class="t-top">
-        <div style="min-width:0">
-          <div class="t-id">${t.id}</div>
-          <div class="t-title">${esc(t.titulo)}</div>
-          ${t.url?`<div class="t-url">${esc(t.url)}</div>`:""}
-          <div class="chips">
-            <span class="chip p${t.p}">P${t.p}</span>
-            <span class="chip ${t.area}">${t.area==="dev"?"Desarrollo":"SEO"}</span>
-            <span class="chip">${esc(t.esfuerzo)}</span>
-            <span class="chip">${esc(t.plazo)}</span>
-            ${t.backup?'<span class="chip warn">Copia de seguridad antes</span>':""}
-          </div>
+  const list = document.getElementById("list");
+  const open = new Set();
+
+  function render(){
+    document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected", b.dataset.a===area?"true":"false"));
+    list.setAttribute("aria-labelledby","tab-"+area);
+    let html="", n=0, lastP=0;
+    ORDEN[area].forEach(id=>{
+      const t=BY[id]; if(!t) return; n++;
+      if(t.p!==lastP){ lastP=t.p; html+=`<li class="sep" aria-hidden="true"><span class="sw" style="background:var(--${PR[t.p][0]})"></span>${PR[t.p][1]}</li>`; }
+      const s=st(id), isOpen=open.has(id);
+      const pasos=t.pasos.map(x=>`<li>${inl(x)}</li>`).join("");
+      const code=t.codigo?`<div class="cw"><pre><code>${esc(t.codigo)}</code></pre><button class="copy" type="button" data-copy="${id}">Copiar</button></div>`:"";
+      html+=`<li class="task${isOpen?" open":""}" data-id="${id}" data-s="${s}">
+        <div class="row">
+          <button class="box" type="button" data-s="${s}" data-cycle="${id}" aria-label="Estado de la tarea ${n}: ${ST[s]}. Pulsa para cambiarlo">${HALF}${TICK}</button>
+          <span class="num">${n}</span>
+          <button class="what" type="button" data-toggle="${id}" aria-expanded="${isOpen}">
+            <span class="title">${esc(t.titulo)}</span>
+            <span class="sub"><span class="pr ${PR[t.p][0]}">${PR[t.p][0]}</span><span>${esc(t.esfuerzo)}</span>${t.url?`<span class="url">${esc(t.url)}</span>`:""}<span class="chev">›</span></span>
+          </button>
+          <span class="state">${ST[s]}</span>
         </div>
-        <div class="status">
-          <div class="seg" role="group" aria-label="Estado de ${t.id}">
-            <button type="button" data-v="pendiente">Pendiente</button>
-            <button type="button" data-v="progreso">En progreso</button>
-            <button type="button" data-v="terminado">Terminado</button>
+        <div class="detail"${isOpen?"":" hidden"}>
+          <div class="choose" role="group" aria-label="Cambiar estado">
+            ${Object.keys(ST).map(v=>`<button type="button" data-set="${id}" data-v="${v}" aria-pressed="${s===v}">${ST[v]}</button>`).join("")}
           </div>
-          <div class="who"></div>
-        </div>
-      </div>
-      <details>
-        <summary>Pasos para aplicarla</summary>
-        <div class="t-body">
-          <dl class="kv">
-            <dt>Impacto</dt><dd>${inline(t.impacto)}</dd>
-            <dt>Depende de</dt><dd>${inline(t.depende)}</dd>
-          </dl>
-          <h4>Pasos</h4>
+          ${t.backup?'<div class="warnb">Haz una copia de seguridad completa antes de empezar esta tarea.</div>':""}
+          <dl class="meta"><dt>Impacto</dt><dd>${inl(t.impacto)}</dd><dt>Depende de</dt><dd>${inl(t.depende)}</dd><dt>Ref.</dt><dd><code>${id}</code></dd></dl>
+          <h3>Pasos</h3>
           <ol>${pasos}</ol>
           ${code}
-          <div class="done-crit"><b>Se da por terminada cuando:</b> ${inline(t.hecho)}</div>
+          <div class="ok"><b>Está terminada cuando:</b> ${inl(t.hecho)}</div>
         </div>
-      </details>`;
-    el.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>cambiar(t.id,b.dataset.v)));
-    const cp = el.querySelector(".copy");
-    if(cp) cp.addEventListener("click",()=>{
-      const txt = t.codigo;
-      const ok = ()=>{cp.textContent="Copiado"; setTimeout(()=>cp.textContent="Copiar",1500);};
-      try{ navigator.clipboard.writeText(txt).then(ok,()=>selectPre(el)); }catch(e){ selectPre(el); }
+      </li>`;
     });
-    return el;
+    list.innerHTML=html;
+    if(!writable) list.querySelectorAll("[data-cycle],[data-set]").forEach(b=>b.disabled=true);
+    progreso();
   }
-  function selectPre(el){const r=document.createRange();r.selectNodeContents(el.querySelector("pre"));const s=getSelection();s.removeAllRanges();s.addRange(r);}
 
-  // ---------- render dinámico ----------
-  async function pintar(){
-    const ids = [...new Set(Object.values(estados).map(e=>e.por).filter(Boolean))];
-    let perfiles = {};
-    if(user && ids.length){ try{ perfiles = await user.profiles(ids); }catch(e){} }
-    document.querySelectorAll(".task").forEach(el=>{
-      const id = el.dataset.id, e = est(id);
-      el.dataset.estado = e;
-      el.querySelectorAll(".seg button").forEach(b=>{
-        b.setAttribute("aria-pressed", b.dataset.v===e ? "true":"false");
-        b.disabled = !canWrite;
-      });
-      const info = estados[id], who = el.querySelector(".who");
-      if(info && info.at){
-        const n = info.por && perfiles[info.por] ? (perfiles[info.por].name || "Alguien") : "";
-        const f = new Date(info.at).toLocaleDateString("es-ES",{day:"numeric",month:"short"});
-        who.textContent = (n ? n+" · " : "") + f;
-      } else who.textContent = "";
-      const visible = (filtro.area==="todas"||el.dataset.area===filtro.area) && (filtro.estado==="todos"||e===filtro.estado);
-      el.hidden = !visible;
+  function progreso(){
+    const ids=ORDEN[area], tot=ids.length;
+    const c={pendiente:0,progreso:0,terminado:0}; ids.forEach(id=>c[st(id)]++);
+    const tr=document.getElementById("track");
+    tr.querySelector(".d").style.width=(c.terminado/tot*100)+"%";
+    tr.querySelector(".p").style.width=(c.progreso/tot*100)+"%";
+    document.getElementById("ptext").innerHTML=`<b>${c.terminado} de ${tot}</b> finalizadas · ${c.progreso} en progreso · ${c.pendiente} pendientes`;
+    ["seo","dev"].forEach(a=>{
+      const d=ORDEN[a].filter(id=>st(id)==="terminado").length;
+      document.getElementById("n-"+a).textContent=`${d}/${ORDEN[a].length}`;
     });
-    document.querySelectorAll(".group").forEach(g=>{
-      const all = g.querySelectorAll(".task"), vis = [...all].filter(x=>!x.hidden);
-      const done = [...all].filter(x=>x.dataset.estado==="terminado").length;
-      g.querySelector(".count").textContent = `${done}/${all.length} terminadas`;
-      g.hidden = filtro.area!=="todas" && g.dataset.area!==filtro.area;
-      g.querySelector(".empty").hidden = vis.length>0;
-    });
-    resumen();
   }
 
-  function cuenta(lista){
-    const c={pendiente:0,progreso:0,terminado:0};
-    lista.forEach(t=>c[est(t.id)]++); return c;
-  }
-  function barra(c,n){
-    return `<div class="bar" aria-hidden="true"><i class="d" style="width:${c.terminado/n*100}%"></i><i class="g" style="width:${c.progreso/n*100}%"></i></div>`;
-  }
-  function resumen(){
-    const tot = cuenta(TAREAS), n = TAREAS.length;
-    const fila = (lbl,lista)=>{const c=cuenta(lista);return `<div class="row"><span>${lbl}</span>${barra(c,lista.length)}<span>${c.terminado}/${lista.length}</span></div>`;};
-    document.getElementById("summary").innerHTML = `
-      <div class="sum"><h2>Avance total</h2>
-        <div class="big">${Math.round(tot.terminado/n*100)} %<small>${tot.terminado} de ${n} terminadas</small></div>
-        ${barra(tot,n)}
-        <div class="legend"><span><i style="background:var(--st-done)"></i>Terminado ${tot.terminado}</span><span><i style="background:var(--st-prog)"></i>En progreso ${tot.progreso}</span><span><i style="background:var(--st-pend-bg);border:1px solid var(--line)"></i>Pendiente ${tot.pendiente}</span></div>
-      </div>
-      <div class="sum"><h2>Por prioridad</h2><div class="rows">
-        ${fila("P1",TAREAS.filter(t=>t.p===1))}${fila("P2",TAREAS.filter(t=>t.p===2))}${fila("P3",TAREAS.filter(t=>t.p===3))}
-      </div></div>
-      <div class="sum"><h2>Por responsable</h2><div class="rows">
-        ${fila("Desarrollo",TAREAS.filter(t=>t.area==="dev"))}${fila("SEO",TAREAS.filter(t=>t.area==="seo"))}
-      </div></div>`;
-  }
-
-  // ---------- filtros ----------
-  document.querySelectorAll(".chipbtn").forEach(b=>b.addEventListener("click",()=>{
-    filtro[b.dataset.f]=b.dataset.v;
-    document.querySelectorAll(`.chipbtn[data-f="${b.dataset.f}"]`).forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
-    try{ localStorage.setItem("pa-filtro",JSON.stringify(filtro)); }catch(e){}
-    pintar();
-  }));
-  try{
-    const f = JSON.parse(localStorage.getItem("pa-filtro")||"null");
-    if(f){ Object.assign(filtro,f);
-      document.querySelectorAll(".chipbtn").forEach(x=>x.setAttribute("aria-pressed", filtro[x.dataset.f]===x.dataset.v?"true":"false")); }
-  }catch(e){}
-
-  // ---------- estado: compartido (db) o local ----------
-  function sync(cls,txt){const s=document.getElementById("sync");s.className="sync "+cls;document.getElementById("syncText").textContent=txt;}
-  function cargarLocal(){
-    try{ Object.assign(estados, JSON.parse(localStorage.getItem(LS)||"{}")); }catch(e){}
-  }
-  function guardarLocal(){ try{ localStorage.setItem(LS, JSON.stringify(estados)); }catch(e){} }
-
-  async function cambiar(id,v){
-    if(!canWrite || est(id)===v) return;
-    const prev = estados[id];
-    const me = user ? await user.id() : null;
-    estados[id] = {estado:v, por:me, at:new Date().toISOString()};
-    pintar();
-    if(modo==="db"){
-      try{ await db.doc("estados/"+id).set({estado:v, por:me, at:estados[id].at}); }
+  async function setEstado(id,v){
+    if(!writable || st(id)===v) return;
+    const prev=estados[id];
+    estados[id]={estado:v,por:me,at:new Date().toISOString()};
+    try{ localStorage.setItem(LS,JSON.stringify(estados)); }catch(e){}
+    render();
+    if(shared && db){
+      try{ await db.doc("estados/"+id).set(estados[id]); }
       catch(e){
+        if(e && e.code==="invalid_argument"){ writable=false; note("Solo lectura: tu acceso no permite cambiar estados."); }
+        else note("No se pudo guardar el último cambio en el estado compartido.");
         if(prev) estados[id]=prev; else delete estados[id];
-        if(e && e.code==="invalid_argument"){ canWrite=false; sync("local","Solo lectura: no tienes permiso para cambiar estados."); }
-        else sync("local","No se pudo guardar el cambio. Inténtalo de nuevo.");
-        pintar();
+        render();
       }
-    } else guardarLocal();
+    }
   }
 
-  pintar();
+  list.addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    if(b.dataset.cycle){ setEstado(b.dataset.cycle, NEXT[st(b.dataset.cycle)]); }
+    else if(b.dataset.set){ setEstado(b.dataset.set, b.dataset.v); }
+    else if(b.dataset.toggle){ const id=b.dataset.toggle; open.has(id)?open.delete(id):open.add(id); render(); }
+    else if(b.dataset.copy){
+      const txt=BY[b.dataset.copy].codigo, done=()=>{b.textContent="Copiado";setTimeout(()=>b.textContent="Copiar",1500);};
+      const sel=()=>{const r=document.createRange();r.selectNodeContents(b.parentNode.querySelector("pre"));const s=getSelection();s.removeAllRanges();s.addRange(r);};
+      try{ navigator.clipboard.writeText(txt).then(done,sel); }catch(err){ sel(); }
+    }
+  });
+  document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{
+    area=b.dataset.a; try{localStorage.setItem("pa2-tab",area);}catch(e){} render();
+  }));
+
+  function note(t){ document.getElementById("note").textContent=t; }
+
+  render();
+  note("Los cambios se guardan en este navegador.");
+
+  // Estado compartido entre todas las personas con acceso (si el visor lo permite).
   (async function(){
-    if(!window.claude || !window.claude.use){ modo="local"; cargarLocal(); sync("local","El estado se guarda solo en este navegador."); pintar(); return; }
-    try{ [db,user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]); }catch(e){}
-    if(!db){ modo="local"; cargarLocal(); sync("local","El estado se guarda solo en este navegador."); pintar(); return; }
-    modo="db";
-    if(user){ const w = await user.can("data.write"); if(w===false){ canWrite=false; } }
-    const timer = setTimeout(()=>sync("local","No se puede conectar con el estado compartido todavía."),10000);
-    db.collection("estados").onSnapshot(snap=>{
-      if(!snap.metadata.fromCache){ clearTimeout(timer); sync("ok", canWrite ? "Estado compartido: lo ven todas las personas con acceso." : "Estado compartido · solo lectura."); }
-      for(const k in estados) delete estados[k];
-      snap.docs.forEach(d=>{ const x=d.data(); if(x && EST[x.estado]) estados[d.id]=x; });
-      pintar();
-    }, err=>{
-      clearTimeout(timer);
-      sync("local","Se perdió la conexión con el estado compartido. Recarga la página más tarde.");
-    });
+    if(!window.claude || typeof window.claude.use!=="function") return;
+    let user=null;
+    try{ db=await window.claude.use("db"); }catch(e){ db=null; }
+    try{ user=await window.claude.use("user"); }catch(e){ user=null; }
+    if(!db) return;
+    if(user){ try{ me=await user.id(); }catch(e){}
+              try{ if(await user.can("data.write")===false) writable=false; }catch(e){} }
+    const timer=setTimeout(()=>note("Sin conexión con el estado compartido: los cambios se guardan en este navegador."),10000);
+    try{
+      db.collection("estados").onSnapshot(snap=>{
+        if(!snap.metadata.fromCache) clearTimeout(timer);
+        shared=true;
+        const nuevo={};
+        snap.docs.forEach(d=>{const x=d.data(); if(x&&ST[x.estado]) nuevo[d.id]=x;});
+        for(const k in estados) delete estados[k];
+        Object.assign(estados,nuevo);
+        try{ localStorage.setItem(LS,JSON.stringify(estados)); }catch(e){}
+        note(writable?"Estado compartido: todas las personas con acceso ven los mismos estados.":"Estado compartido en modo solo lectura.");
+        render();
+      },()=>{ clearTimeout(timer); shared=false; note("Se perdió la conexión con el estado compartido: los cambios se guardan en este navegador."); });
+    }catch(e){ clearTimeout(timer); }
   })();
 })();
 </script>
