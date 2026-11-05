@@ -1,0 +1,658 @@
+<title>Plan de acción Perro Asistencia</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: tablero de tareas en una columna; resumen de avance arriba, filtros fijos, bloques P1→P3 divididos en Desarrollo y SEO */
+:root{
+  --bg:#f6f8f7; --surface:#ffffff; --fg:#17211d; --muted:#5b6b64; --line:#d9e2de;
+  --accent:#1f6b52; --accent-soft:#e3f0ea; --head:#0f3b2e; --head-fg:#eef6f2;
+  --p1:#b42318; --p1-bg:#fde8e6; --p2:#9a6400; --p2-bg:#fff3d6; --p3:#1f6b52; --p3-bg:#e3f0ea;
+  --dev:#3949ab; --dev-bg:#e8eaf8; --seo:#8e3b8a; --seo-bg:#f6e6f5;
+  --st-pend:#6b7a74; --st-pend-bg:#eef2f0; --st-prog:#1d5fbf; --st-prog-bg:#e3edfb; --st-done:#1f7a45; --st-done-bg:#dff3e7;
+  --code-bg:#eef2f0;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1513; --surface:#161e1b; --fg:#e4ece8; --muted:#9db0a8; --line:#2a3833;
+  --accent:#6cc9a3; --accent-soft:#1d3029; --head:#0b2a21; --head-fg:#e4f2ec;
+  --p1:#ff8a80; --p1-bg:#3a1a18; --p2:#f2c25b; --p2-bg:#3a2e12; --p3:#6cc9a3; --p3-bg:#1d3029;
+  --dev:#9fa8ff; --dev-bg:#232845; --seo:#e59ae0; --seo-bg:#3a2238;
+  --st-pend:#a9b8b2; --st-pend-bg:#222c29; --st-prog:#8ab6ff; --st-prog-bg:#1b2a44; --st-done:#7fd8a3; --st-done-bg:#183326;
+  --code-bg:#1d2724; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1513; --surface:#161e1b; --fg:#e4ece8; --muted:#9db0a8; --line:#2a3833;
+  --accent:#6cc9a3; --accent-soft:#1d3029; --head:#0b2a21; --head-fg:#e4f2ec;
+  --p1:#ff8a80; --p1-bg:#3a1a18; --p2:#f2c25b; --p2-bg:#3a2e12; --p3:#6cc9a3; --p3-bg:#1d3029;
+  --dev:#9fa8ff; --dev-bg:#232845; --seo:#e59ae0; --seo-bg:#3a2238;
+  --st-pend:#a9b8b2; --st-pend-bg:#222c29; --st-prog:#8ab6ff; --st-prog-bg:#1b2a44; --st-done:#7fd8a3; --st-done-bg:#183326;
+  --code-bg:#1d2724; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--head);color:var(--head-fg)}
+header.top .wrap{padding-block:32px 26px;display:grid;gap:8px}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+h1{font:800 clamp(28px,4.6vw,44px)/1.05 var(--display);margin:0;text-wrap:balance}
+.sub{margin:0;max-width:72ch;opacity:.9}
+.sync{display:inline-flex;align-items:center;gap:8px;font:600 13px/1.3 var(--mono);opacity:.9;margin-top:4px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--st-pend)}
+.sync.ok .dot{background:#6cc9a3} .sync.local .dot{background:#f2c25b}
+
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-block:22px 4px}
+.sum{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:8px;min-width:0}
+.sum h2{margin:0;font:600 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.big{font:800 30px/1 var(--display);font-variant-numeric:tabular-nums}
+.big small{font:600 14px/1 var(--body);color:var(--muted);margin-left:6px}
+.bar{height:8px;border-radius:99px;background:var(--st-pend-bg);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .d{background:var(--st-done)} .bar .g{background:var(--st-prog)}
+.rows{display:grid;gap:6px;font-size:14px}
+.row{display:grid;grid-template-columns:92px 1fr 54px;gap:10px;align-items:center}
+.row span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+.filters{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-top:18px}
+.filters .wrap{display:flex;flex-wrap:wrap;gap:10px 22px;padding-block:10px;align-items:center}
+.fgroup{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.fgroup > span{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+.chipbtn{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 13.5px/1 var(--body);padding:7px 11px;border-radius:99px;cursor:pointer}
+.chipbtn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+main{padding-block:12px 64px}
+.prio{margin-top:34px}
+.prio-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--fg);padding-bottom:8px}
+.prio-head h2{margin:0;font:800 26px/1.15 var(--display)}
+.prio-head p{margin:0;color:var(--muted);font-size:14.5px}
+.group{margin-top:18px}
+.group-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.group-head h3{margin:0;font:700 17px/1.2 var(--body)}
+.group-head .count{font:600 12px/1 var(--mono);color:var(--muted)}
+.list{display:grid;gap:10px}
+.empty{color:var(--muted);font-size:14px;padding:6px 2px}
+
+.task{background:var(--surface);border:1px solid var(--line);border-radius:10px;min-width:0}
+.task[data-estado="progreso"]{border-color:color-mix(in srgb,var(--st-prog) 45%,var(--line))}
+.task[data-estado="terminado"] .t-title{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px}
+.t-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 16px;padding:14px 16px;align-items:start}
+.t-id{font:600 12.5px/1 var(--mono);color:var(--muted)}
+.t-title{font:700 16.5px/1.3 var(--body);margin:4px 0 6px}
+.t-url{font:400 12.5px/1.3 var(--mono);color:var(--muted);overflow-wrap:anywhere;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:600 11.5px/1 var(--mono);padding:4px 7px;border-radius:99px;background:var(--code-bg);color:var(--muted);white-space:nowrap}
+.chip.p1{color:var(--p1);background:var(--p1-bg)} .chip.p2{color:var(--p2);background:var(--p2-bg)} .chip.p3{color:var(--p3);background:var(--p3-bg)}
+.chip.dev{color:var(--dev);background:var(--dev-bg)} .chip.seo{color:var(--seo);background:var(--seo-bg)}
+.chip.warn{color:var(--p2);background:var(--p2-bg)}
+.status{display:grid;gap:6px;justify-items:end}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{appearance:none;border:0;background:var(--surface);color:var(--muted);font:600 13px/1 var(--body);padding:8px 10px;cursor:pointer;white-space:nowrap}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"][data-v="pendiente"]{background:var(--st-pend-bg);color:var(--st-pend)}
+.seg button[aria-pressed="true"][data-v="progreso"]{background:var(--st-prog-bg);color:var(--st-prog)}
+.seg button[aria-pressed="true"][data-v="terminado"]{background:var(--st-done-bg);color:var(--st-done)}
+.seg button:disabled{cursor:not-allowed;opacity:.7}
+.who{font-size:12px;color:var(--muted);text-align:right;min-height:1em}
+details{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:10px 16px;font:600 14px/1.2 var(--body);color:var(--accent);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸";display:inline-block;margin-right:8px;transition:transform .15s}
+details[open] summary::before{transform:rotate(90deg)}
+.t-body{padding:0 16px 16px;display:grid;gap:12px}
+.kv{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 14px;font-size:14.5px}
+.kv dt{color:var(--muted);font-weight:600}
+.kv dd{margin:0}
+.t-body h4{margin:4px 0 0;font:700 14px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.t-body ol{margin:0;padding-left:22px;display:grid;gap:6px;max-width:80ch}
+code{font:13px/1.4 var(--mono);background:var(--code-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.codewrap{position:relative}
+pre{margin:0;background:var(--code-bg);padding:14px 16px;padding-right:80px;border-radius:8px;overflow-x:auto;font:12.5px/1.5 var(--mono)}
+.copy{position:absolute;top:8px;right:8px;appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 12px/1 var(--body);padding:6px 9px;border-radius:6px;cursor:pointer}
+.done-crit{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:14.5px}
+.done-crit b{font-weight:700}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .wrap{padding-block:18px 30px}
+@media (max-width:720px){
+  .t-top{grid-template-columns:minmax(0,1fr)}
+  .status{justify-items:start}
+  .who{text-align:left}
+  .kv{grid-template-columns:minmax(0,1fr)}
+  .kv dd{margin-bottom:6px}
+}
+@media (prefers-reduced-motion:reduce){summary::before{transition:none}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">perroasistencia.es · plan de acción SEO</div>
+    <h1>Plan de acción por prioridades</h1>
+    <p class="sub">60 tareas ordenadas de P1 (inmediata) a P3 (medio plazo) y separadas entre desarrollo/programación y SEO. Abre cada tarea para ver los pasos y marca su estado: pendiente, en progreso o terminado.</p>
+    <div class="sync" id="sync"><span class="dot"></span><span id="syncText">Conectando con el estado compartido…</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="summary" id="summary"></div>
+</div>
+
+<div class="filters">
+  <div class="wrap">
+    <div class="fgroup" role="group" aria-label="Filtrar por responsable">
+      <span>Responsable</span>
+      <button class="chipbtn" data-f="area" data-v="todas" aria-pressed="true">Todas</button>
+      <button class="chipbtn" data-f="area" data-v="dev" aria-pressed="false">Desarrollo</button>
+      <button class="chipbtn" data-f="area" data-v="seo" aria-pressed="false">SEO</button>
+    </div>
+    <div class="fgroup" role="group" aria-label="Filtrar por estado">
+      <span>Estado</span>
+      <button class="chipbtn" data-f="estado" data-v="todos" aria-pressed="true">Todos</button>
+      <button class="chipbtn" data-f="estado" data-v="pendiente" aria-pressed="false">Pendiente</button>
+      <button class="chipbtn" data-f="estado" data-v="progreso" aria-pressed="false">En progreso</button>
+      <button class="chipbtn" data-f="estado" data-v="terminado" aria-pressed="false">Terminado</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap" id="main"></main>
+
+<footer><div class="wrap">Basado en la auditoría técnica y on-page de octubre de 2026 (GSC, GA4, DinoRank y rastreo propio). El estado de cada tarea se comparte con todas las personas que tienen acceso a esta página.</div></footer>
+
+<script>
+// Datos del plan de acción. area: "dev" = desarrollo/programación, "seo" = SEO/redacción.
+const TAREAS = [
+// ───────────── P1 · DESARROLLO ─────────────
+{id:"T1.1",p:1,area:"dev",titulo:"Configurar Consent Mode v2 en GA4",esfuerzo:"Bajo · 2 h",plazo:"Semana 1",impacto:"Muy alto: GA4 pasa de medir ~20 % a ~90 % del tráfico.",depende:"—",
+pasos:["Revisar el plugin de cookies: no debe bloquear `gtag.js` por completo antes del consentimiento.","Cargar el tag de GA4 siempre, con el estado de consentimiento por defecto en `denied` (código abajo), antes del snippet de gtag.","En el callback de «Aceptar» del banner, llamar a `gtag('consent','update',{analytics_storage:'granted', ad_storage:'granted', ad_user_data:'granted', ad_personalization:'granted'})`.","Comprobar con Tag Assistant el estado antes y después de aceptar."],
+codigo:`<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{
+  ad_storage:'denied', analytics_storage:'denied',
+  ad_user_data:'denied', ad_personalization:'denied',
+  wait_for_update: 500
+});
+</script>
+<!-- después: gtag.js + gtag('config','G-XXXX') -->`,
+hecho:"Tag Assistant muestra el consentimiento correcto antes y después de aceptar."},
+
+{id:"T1.2",p:1,area:"dev",titulo:"Crear eventos de conversión (teléfono, WhatsApp, formulario)",esfuerzo:"Bajo · 2 h",plazo:"Semana 1",impacto:"Muy alto: medir los leads por primera vez.",depende:"T1.1",
+pasos:["Añadir el script de abajo en el pie de todas las páginas (o crear las mismas reglas en GTM).","Si el formulario no es Contact Form 7, usar el evento de «envío correcto» de su plugin.","En GA4 → Administrar → Eventos, marcar `click_tel`, `click_whatsapp` y `form_submit` como eventos clave.","Probar los tres en DebugView."],
+codigo:`document.addEventListener('click', function(e){
+  const a = e.target.closest('a'); if(!a) return;
+  const h = a.getAttribute('href') || '';
+  if (h.startsWith('tel:')) gtag('event','click_tel',{link_url:h, page:location.pathname});
+  if (/wa\\.me|whatsapp/i.test(h)) gtag('event','click_whatsapp',{link_url:h, page:location.pathname});
+});
+document.addEventListener('wpcf7mailsent', () =>
+  gtag('event','form_submit',{page:location.pathname}));`,
+hecho:"Los 3 eventos aparecen en DebugView y están marcados como clave."},
+
+{id:"T1.3",p:1,area:"dev",titulo:"Vincular GA4 con Search Console",esfuerzo:"Bajo · 15 min",plazo:"Semana 1",impacto:"Medio: ver consultas y landings orgánicas dentro de GA4.",depende:"—",
+pasos:["GA4 → Administrar → Vinculaciones de productos → Search Console → Vincular.","Elegir la propiedad `perroasistencia.es` y el flujo web.","En Informes → Biblioteca, publicar la colección «Search Console»."],
+hecho:"El informe de Search Console aparece en GA4."},
+
+{id:"T5.1",p:1,area:"dev",titulo:"Redirigir la URL 404 de caniches",esfuerzo:"Bajo · 15 min",plazo:"Semana 1",impacto:"Medio: se recuperan las visitas que llegan a una página rota.",depende:"—",
+pasos:["Crear la redirección 301 en Rank Math → Redirecciones (o en `.htaccess`, código abajo).","Activar en Rank Math el «Monitor 404».","Revisar si algún plugin de traducción está generando slugs como «for» en lugar de «para»."],
+codigo:`Redirect 301 /caniches-7-consejos-for-adiestrar-la-raza/ https://perroasistencia.es/caniches-7-consejos-para-adiestrar-la-raza/`,
+hecho:"`curl -I` de la URL antigua devuelve 301 a la buena."},
+
+{id:"T4.1",p:1,area:"dev",titulo:"Corregir los 105 enlaces internos que pasan por redirecciones",esfuerzo:"Bajo · 1 h",plazo:"Semana 1",impacto:"Alto: se recupera la autoridad interna que pierden las redirecciones.",depende:"Copia de seguridad",backup:true,
+pasos:["Hacer copia de seguridad completa (archivos y base de datos).","Lanzar el reemplazo en modo simulación (`--dry-run`) y comprobar que el recuento ronda 105.","Repetirlo sin `--dry-run`.","Sin consola: usar el plugin Better Search Replace con expresión regular.","Listado completo de enlaces: anexo `enlaces-internos-a-corregir.csv` del repositorio."],
+codigo:`wp search-replace 'https://perroasistencia\\.es/20[0-9]{2}/[0-9]{2}/[0-9]{2}/' \\
+  'https://perroasistencia.es/' wp_posts \\
+  --include-columns=post_content --regex --dry-run`,
+hecho:"Un nuevo rastreo da 0 enlaces internos con 3xx."},
+
+{id:"T3.1",p:1,area:"dev",titulo:"Desindexar etiquetas, autor, galerías y búsqueda interna",esfuerzo:"Bajo · 1 h",plazo:"Semana 2",impacto:"Alto: ~300 URLs de relleno fuera del índice.",depende:"—",
+pasos:["Rank Math → Títulos y metas → Etiquetas: robots `noindex, follow`.","Rank Math → Títulos y metas → Autores: `noindex` (o desactivar el archivo de autor).","Páginas de galería (`/galeria*`, `/nuestra-galeria/`): `noindex, follow` en cada página.","Rank Math → Sitemap: quitar etiquetas y autores del sitemap.","Comprobar que la búsqueda interna (`?s=`) lleva `noindex`."],
+hecho:"El sitemap no incluye esas URLs y su `<meta robots>` es `noindex`."},
+
+{id:"T3.2",p:1,area:"dev",titulo:"Vaciar la categoría «Sin categoría»",esfuerzo:"Bajo · 1 h",plazo:"Semana 2",impacto:"Bajo: elimina una categoría sin sentido.",depende:"T3.1",
+pasos:["Entradas → filtrar por categoría «Sin categoría».","Asignar a cada post una categoría real (Educación, Salud, Cachorros…).","Poner `noindex` a `/category/sin-categoria/` mientras quede algo dentro."],
+hecho:"La categoría queda vacía."},
+
+{id:"T2.1",p:1,area:"dev",titulo:"Activar caché de página completa",esfuerzo:"Medio · 4 h",plazo:"Semana 2",impacto:"Muy alto: el servidor pasa de 1,7–4 s a menos de 0,8 s.",depende:"Copia de seguridad",backup:true,
+pasos:["Si el servidor es LiteSpeed: instalar LiteSpeed Cache. Si no: WP Rocket o W3 Total Cache.","Activar también Redis Object Cache si el hosting lo ofrece.","Excluir de la caché el carrito y los formularios si los hubiera.","Comprobar el encabezado de caché HIT en la segunda petición (código abajo)."],
+codigo:`curl -sI https://perroasistencia.es/ | grep -i cache
+curl -o /dev/null -s -w "%{time_starttransfer}\\n" https://perroasistencia.es/`,
+hecho:"Encabezado HIT y tiempo de respuesta < 0,8 s en la home."},
+
+{id:"T2.2",p:1,area:"dev",titulo:"PHP 8.3, OPcache y limpieza de base de datos",esfuerzo:"Medio · 3 h",plazo:"Semana 2",impacto:"Alto: menos tiempo de servidor en cada página.",depende:"T2.1",
+pasos:["En el panel del hosting, subir a PHP 8.3 o superior y activar OPcache.","Medir el tamaño de las opciones que se cargan siempre (consulta abajo).","Borrar transients caducados y revisiones antiguas (WP-Optimize o `wp transient delete --expired`).","Si las opciones autoload superan 800 KB, localizar el plugin responsable y desactivarlo o limpiarlo."],
+codigo:`SELECT SUM(LENGTH(option_value))/1024 AS kb
+FROM wp_options WHERE autoload IN ('yes','on');`,
+hecho:"Autoload por debajo de 800 KB y PHP 8.3 activo."},
+
+{id:"T2.3",p:1,area:"dev",titulo:"CDN para archivos estáticos",esfuerzo:"Medio · 2 h",plazo:"Semana 2",impacto:"Alto: imágenes, CSS y JS servidos desde cerca del usuario.",depende:"T2.1",
+pasos:["Dar de alta el dominio en Cloudflare (plan gratuito) o activar el CDN del hosting.","Activar HTTP/3 y Brotli.","Comprobar que el plugin de caché no choca con la caché del CDN (purgar ambos al publicar)."],
+hecho:"Los estáticos se sirven desde el CDN."},
+
+{id:"T2.4",p:1,area:"dev",titulo:"Corregir lentitud de /tag/ y /pack-sesiones/",esfuerzo:"Medio · 3 h",plazo:"Semana 2",impacto:"Alto: /pack-sesiones/ es la página de precios (hoy 5,9 s).",depende:"T2.1",
+pasos:["Instalar Query Monitor y abrir `/pack-sesiones/` y una URL de `/tag/`.","Identificar consultas lentas y plugins con más tiempo de carga.","Desactivar o sustituir el plugin culpable, o cargarlo solo donde haga falta."],
+hecho:"/pack-sesiones/ carga en menos de 2,5 s."},
+
+{id:"T6.1",p:1,area:"dev",titulo:"Schema de negocio local con la sede de Ubrique",esfuerzo:"Bajo · 1 h",plazo:"Semana 2",impacto:"Alto: mejor visibilidad en el mapa y en búsquedas locales.",depende:"Dirección confirmada por el cliente",
+pasos:["Rank Math → Títulos y metas → SEO local: tipo «ProfessionalService».","Rellenar dirección completa, código postal, teléfono, horario y coordenadas.","Añadir `areaServed`: Ubrique, provincia de Cádiz, Sevilla y Málaga.","Añadir `priceRange` y el logo.","Validar en Rich Results Test."],
+hecho:"Rich Results Test sin errores en la home."},
+
+{id:"T6.2",p:1,area:"dev",titulo:"Corregir los perfiles sociales del schema",esfuerzo:"Bajo · 15 min",plazo:"Semana 2",impacto:"Medio: Google conecta bien la marca con sus perfiles.",depende:"—",
+pasos:["Rank Math → Títulos y metas → Social: el campo de Twitter debe ser solo el usuario o la URL completa una vez (hoy sale `https://twitter.com/https://twitter.com/AsistenciaPerro`).","Añadir Facebook, YouTube, Instagram y la ficha de Google Business Profile."],
+hecho:"El JSON-LD muestra `sameAs` válidos."},
+
+{id:"T6.3",p:1,area:"dev",titulo:"Quitar el schema «Article» de la home",esfuerzo:"Bajo · 15 min",plazo:"Semana 2",impacto:"Medio: la home se entiende como página de negocio.",depende:"—",
+pasos:["Editar la página de inicio → pestaña Schema de Rank Math.","Eliminar el tipo «Artículo» y dejar «WebPage» (o ninguno: el de organización ya va global)."],
+hecho:"validator.schema.org no muestra `Article` en la home."},
+
+// ───────────── P1 · SEO ─────────────
+{id:"S1.1",p:1,area:"seo",titulo:"Nuevo title y meta: perro guardián",url:"/friend-el-perro-guardian-agresivo/",esfuerzo:"Bajo · 15 min",plazo:"Semana 1",impacto:"CTR del 0,5 % al 4 % → +20 clics/mes (posición 1,9, 606 impresiones).",depende:"—",
+pasos:["Rank Math en la entrada → Editar snippet.","Title: «Perro guardián: por qué se vuelve agresivo y cómo evitarlo (caso real)».","Meta: «Friend aprendió a atacar paso a paso. Te explicamos qué convierte a un perro guardián en agresivo y qué hacer para reconducirlo, según un adiestrador profesional.»","Anotar fecha del cambio para comparar en GSC a 28 días."],
+hecho:"Title y meta publicados y fecha registrada."},
+
+{id:"S1.2",p:1,area:"seo",titulo:"Nuevo title y meta: collar estrangulador",url:"/el-collar-estrangulador/",esfuerzo:"Bajo · 15 min",plazo:"Semana 1",impacto:"+15 clics/mes (posición 3–5, 500 impresiones, CTR 0,4 %).",depende:"—",
+pasos:["Title: «Collar estrangulador para perros: cuándo usarlo y riesgos reales».","Meta: «¿Es seguro el collar estrangulador? Cómo se coloca, cuándo tiene sentido, qué daños puede causar y qué alternativas recomendamos como adiestradores.»","Registrar la fecha del cambio."],
+hecho:"Title y meta publicados."},
+
+{id:"S1.3",p:1,area:"seo",titulo:"Nuevo title y meta: instinto depredador",url:"/el-instinto-depredador-del-perro/",esfuerzo:"Bajo · 15 min",plazo:"Semana 1",impacto:"+8 clics/mes (posición 4,8, 0 clics).",depende:"—",
+pasos:["Title: «Instinto depredador en perros: señales y cómo controlarlo».","Meta: «Si tu perro persigue gatos, bicis o coches, es instinto de presa. Aprende a reconocer sus fases y los ejercicios para canalizarlo sin peligro.»","Registrar la fecha del cambio."],
+hecho:"Title y meta publicados."},
+
+{id:"S1.4",p:1,area:"seo",titulo:"Nuevo title y meta: collar de impulsos",url:"/collar-educativo-de-impulsos-estaticos/",esfuerzo:"Bajo · 15 min",plazo:"Semana 1",impacto:"+10 clics/mes (posición 5–6,5, CTR 0,3 %).",depende:"—",
+pasos:["Title: «Collar de impulsos para perros: cómo funciona y cuándo NO usarlo».","Meta: «Qué es el collar de impulsos estáticos, qué dice la ley, riesgos y en qué casos un adiestrador lo desaconseja. Guía honesta y sin venta.»","Registrar la fecha del cambio."],
+hecho:"Title y meta publicados."},
+
+{id:"S1.5",p:1,area:"seo",titulo:"Corregir «Icansables» y los ALT de sus imágenes",url:"/perros-incansables/",esfuerzo:"Bajo · 30 min",plazo:"Semana 1",impacto:"+5–10 clics/mes (posición 1,2, 1.278 impresiones).",depende:"—",
+pasos:["Corregir la errata en title y H1: «Perros incansables».","Title: «Perros incansables: el caso real de Lucas (con fotos)».","Meta: «Lucas no paraba nunca. Te contamos con fotos reales cómo canalizamos su energía y qué hacer si tu perro es incansable.»","Escribir ALT descriptivos en las 6 imágenes que no lo tienen (ej.: «Lucas, perro mestizo, corriendo en el campo»)."],
+hecho:"Sin errata y 0 imágenes sin ALT."},
+
+{id:"S1.6",p:1,area:"seo",titulo:"Optimizar la página del perro lazarillo",url:"/perro-lazarillo-asistencia-a-la-discapacidad/",esfuerzo:"Medio · 3 h",plazo:"Semanas 1–2",impacto:"Posición 11 → top 5; 30–50 clics/mes (hoy 0 clics con 1.185 impresiones).",depende:"—",
+pasos:["H1: «Perro lazarillo: qué es, cómo se entrena y cómo actuar si te cruzas con uno».","Title: «Perro lazarillo: qué es, razas y cómo se entrena».","Primer párrafo: definición directa en 40–60 palabras.","Añadir H2 con las preguntas de Google: razas más usadas, cuánto dura el entrenamiento, quién puede tener uno, qué dice la ley en Andalucía.","Añadir una tabla «perro guía frente a perro de asistencia» y un bloque de preguntas frecuentes.","Ejecutar TF-IDF de DinoRank con «perro lazarillo» y cubrir los términos que falten."],
+hecho:"Página publicada con H1, definición, H2 de preguntas, tabla y FAQ."},
+
+{id:"S1.7",p:1,area:"seo",titulo:"Fusionar los dos posts de sarro",url:"/como-afecta-el-sarro-en-perro/",esfuerzo:"Medio · 3 h",plazo:"Semanas 2–3",impacto:"«sarro en perro» (590/mes): posición 20–24 → top 10.",depende:"Desarrollo aplica el 301 (T10.1)",
+pasos:["Copiar lo útil de `/que-sintomas-provoca-el-sarro-en-perros/` dentro de `/como-afecta-el-sarro-en-perro/`.","Estructura: síntomas, causas, consecuencias, prevención, cómo quitarlo en casa, cuándo ir al veterinario.","Title: «Sarro en perros: síntomas, consecuencias y cómo quitarlo».","Si es posible, añadir «Revisado por [veterinario colegiado]».","Avisar a desarrollo para la redirección 301 (T10.1)."],
+hecho:"Contenido unificado y aviso enviado para el 301."},
+
+{id:"S1.8",p:1,area:"seo",titulo:"Enlazar las 6 páginas huérfanas que ya tienen impresiones",esfuerzo:"Medio · 4 h",plazo:"Semanas 2–3",impacto:"Subida de 3–6 posiciones en cada una.",depende:"—",
+pasos:["Perro lazarillo ← desde /perros-de-asistencia/, /perro-de-asistencia-de-discapacidad-visual/, /seleccion-del-perro-guia/ (anchor «perro lazarillo»).","Border collie ← desde /obsesion-por-el-juego/, /perro-persigue-la-cola/, /duna-y-la-neurosis-de-la-cola-caso-real/ (anchor «adiestramiento del border collie»).","Collar estrangulador ← desde /collar-de-adiestramiento-de-puas/, /collar-cabezal-para-perros-halti/, /el-tiro-de-la-correa/ (anchor «collar estrangulador»).","Instinto depredador ← desde /los-instintos-desarrollado-en-el-perro/, /por-que-los-perros-callejeros-persiguen-a-las-personas/, /las-fugas-en-el-perro/.","Ansiedad por separación ← desde /ladridos-en-la-soledad/, /el-perro-destructivo/, /la-dependencia-caso-real/.","Sarro ← desde /que-pienso-debo-dar-a-mi-perro/, /envejecimiento-canino-lo-que-todo-dueno-debe-saber/.","Los enlaces van dentro del texto, en una frase natural, no en listas al final."],
+hecho:"Cada una de las 6 URLs recibe al menos 3 enlaces contextuales."},
+
+{id:"S1.9",p:1,area:"seo",titulo:"Llamada a la acción de servicio en todos los posts",esfuerzo:"Bajo · 2 h",plazo:"Semanas 2–3",impacto:"El 55 % del tráfico (posts) pasa a tener un camino a contacto.",depende:"T1.2 para medirlo",
+pasos:["Crear un bloque reutilizable (patrón sincronizado) en el editor: «¿Tu perro tiene este problema? Valoración gratuita por WhatsApp» + botón de WhatsApp + enlace a /pack-sesiones/.","Insertarlo al final de todos los posts de conducta y, en los largos, también a mitad del texto.","Si hay muchos posts, pedir a desarrollo que lo inserte automáticamente al final del contenido."],
+hecho:"El bloque aparece en todos los posts y genera eventos `click_whatsapp`."},
+
+{id:"S1.10",p:1,area:"seo",titulo:"Optimizar la página del border collie",url:"/adiestramiento-border-collie-conduta-obsesiva/",esfuerzo:"Medio · 2 h",plazo:"Semanas 3–4",impacto:"«adiestramiento border collie» (170/mes): posición 12–17 → top 10.",depende:"—",
+pasos:["H1 actual («Quinto, el Border Collie obsesivo») no tiene la keyword. Cambiar a: «Adiestramiento del border collie: cómo gestionar su conducta obsesiva (caso real)».","Añadir H2: ejercicios mentales, juegos de olfato, rutina diaria por edad, señales de conducta obsesiva.","No cambiar la URL aunque tenga la errata «conduta»."],
+hecho:"H1 y nuevos H2 publicados."},
+
+// ───────────── P2 · DESARROLLO ─────────────
+{id:"T6.4",p:2,area:"dev",titulo:"Schema «Service» en las 4 landings de ciudad",esfuerzo:"Bajo · 2 h",plazo:"Semana 3",impacto:"Alto: cada landing se entiende como servicio en su ciudad.",depende:"T6.1",
+pasos:["En cada landing (Sevilla, Cádiz, Málaga, Ubrique) → Rank Math → Schema → Personalizado.","Pegar el JSON-LD de abajo cambiando ciudad y URL.","Validar las 4 en Rich Results Test."],
+codigo:`{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://perroasistencia.es/adiestramiento-canino-sevilla/#service",
+  "name": "Adiestramiento canino en Sevilla",
+  "serviceType": "Adiestramiento canino y modificación de conducta",
+  "provider": { "@id": "https://perroasistencia.es/#organization" },
+  "areaServed": { "@type": "City", "name": "Sevilla" },
+  "url": "https://perroasistencia.es/adiestramiento-canino-sevilla/",
+  "offers": { "@type": "Offer", "url": "https://perroasistencia.es/pack-sesiones/", "priceCurrency": "EUR" }
+}`,
+hecho:"Las 4 URLs validan sin errores."},
+
+{id:"T7.1",p:2,area:"dev",titulo:"Nuevo menú principal orientado a servicios",esfuerzo:"Bajo · 2 h",plazo:"Semana 3",impacto:"Alto: la autoridad interna va a las páginas que venden.",depende:"Visto bueno de SEO",
+pasos:["Apariencia → Menús. Estructura: Inicio · Adiestramiento (Sevilla, Cádiz, Málaga, Ubrique y A domicilio cuando exista) · Perros de asistencia · Precios (/pack-sesiones/) · Blog · Contacto.","Quitar del menú cualquier post suelto."],
+hecho:"El menú no enlaza ningún post."},
+
+{id:"T7.2",p:2,area:"dev",titulo:"Limpiar el pie de página",esfuerzo:"Bajo · 1 h",plazo:"Semana 3",impacto:"Medio: menos enlaces sitewide sin valor (hoy 48).",depende:"T7.1",
+pasos:["Quitar los 4 posts al azar (agorafobia, síndrome de furia, baño, ansiedad por la comida).","Quitar galerías y categorías.","Dejar: servicios, ciudades, contacto, aviso legal, privacidad y cookies."],
+hecho:"25 enlaces sitewide o menos."},
+
+{id:"T8.1",p:2,area:"dev",titulo:"Arreglar plantillas de title y meta de archivos",esfuerzo:"Bajo · 1 h",plazo:"Semana 3",impacto:"Medio: elimina 10 metas duplicadas.",depende:"—",
+pasos:["Rank Math → Títulos y metas → Categorías/Etiquetas/Blog: añadir la variable `%page%` al title y a la meta.","Corregir la plantilla rota que genera «…calidad de vida de tu perro, . ✅».","Quitar «lll➤» y «✅» de las plantillas globales."],
+hecho:"0 metas duplicadas en DinoRank."},
+
+{id:"T8.2",p:2,area:"dev",titulo:"Verificar las 44 URLs antiguas sin title",esfuerzo:"Bajo · 1 h",plazo:"Semana 3",impacto:"Medio: confirma que no hay páginas antiguas indexables.",depende:"T4.1",
+pasos:["Exportar de DinoRank las URLs `/AAAA/MM/DD/…` sin title.","Comprobar con `curl -I` que todas devuelven 301 a la URL nueva.","Confirmar que ninguna está en el sitemap."],
+hecho:"Las 44 devuelven 301."},
+
+{id:"T10.1",p:2,area:"dev",titulo:"Redirección 301 del post de sarro duplicado",esfuerzo:"Bajo · 15 min",plazo:"Semana 3",impacto:"Alto: concentra la autoridad en una sola página de sarro.",depende:"SEO ha fusionado el contenido (S1.7)",
+pasos:["Rank Math → Redirecciones → nueva 301.","Origen `/que-sintomas-provoca-el-sarro-en-perros/` → destino `/como-afecta-el-sarro-en-perro/`.","Pasar el post antiguo a borrador.","Actualizar enlaces internos que apunten al antiguo."],
+hecho:"`curl -I` devuelve 301."},
+
+{id:"T9.1",p:2,area:"dev",titulo:"Optimizar imágenes (WebP, tamaños, lazy load)",esfuerzo:"Medio · 4 h",plazo:"Semanas 4–5",impacto:"Alto: mejor LCP y CLS.",depende:"T2.3",
+pasos:["Convertir a WebP/AVIF con el plugin de caché o Imagify/ShortPixel.","Añadir `width` y `height` a todas las imágenes.","`loading=\"lazy\"` en las que están fuera de la primera pantalla.","`fetchpriority=\"high\"` en la imagen principal (LCP) de cada plantilla."],
+hecho:"CLS < 0,1 en Lighthouse."},
+
+{id:"T9.2",p:2,area:"dev",titulo:"Cargar los vídeos de YouTube en diferido",esfuerzo:"Medio · 3 h",plazo:"Semanas 4–5",impacto:"Medio: las páginas de vídeo y galerías pesan mucho menos.",depende:"—",
+pasos:["Activar la opción de «miniatura en lugar de iframe» del plugin de caché, o usar lite-youtube.","Aplicarlo a las URLs `*-video/` y a las galerías."],
+hecho:"Ningún iframe de YouTube se carga al abrir la página."},
+
+{id:"T9.3",p:2,area:"dev",titulo:"Cargar Hustle y scripts solo donde se usan",esfuerzo:"Medio · 3 h",plazo:"Semanas 4–5",impacto:"Medio: menos JavaScript en cada página.",depende:"—",
+pasos:["Instalar Perfmatters o Asset CleanUp.","Desactivar Hustle (popups) en las páginas donde no hay popup.","Desactivar scripts y estilos de plugins que no se usan en cada plantilla."],
+hecho:"Lighthouse móvil ≥ 70 en home y /pack-sesiones/."},
+
+{id:"T1.4",p:2,area:"dev",titulo:"Comprobar que GA4 ya mide bien",esfuerzo:"Bajo · 30 min",plazo:"Semana 4",impacto:"Alto: confirma que la medición es fiable.",depende:"T1.1 + 14 días",
+pasos:["Comparar sesiones orgánicas de GA4 con clics de GSC en los mismos 14 días.","Si la ratio es menor de 0,85, revisar de nuevo el banner de cookies y Consent Mode."],
+hecho:"Ratio GA4/GSC ≥ 0,85."},
+
+// ───────────── P2 · SEO ─────────────
+{id:"S2.1",p:2,area:"seo",titulo:"Rehacer la landing de Ubrique (sede)",url:"/adiestramiento-canino-ubrique/",esfuerzo:"Medio · 4 h",plazo:"Semanas 3–4",impacto:"Hoy no rankea en su propia ciudad → objetivo top 3.",depende:"T6.1",
+pasos:["Title: «Adiestrador canino en Ubrique | Perro Asistencia (centro y residencia)».","H1: «Adiestrador de perros en Ubrique».","Primer párrafo: qué se ofrece, a quién y dónde, en 2–3 frases.","Añadir dirección física, mapa y relación con la residencia canina.","Secciones: zonas atendidas (Sierra de Cádiz), problemas que resolvemos (con enlaces al blog), método en 3–4 pasos, precio orientativo, testimonios con nombre del perro, FAQ local.","CTA de WhatsApp y llamada arriba, a mitad y al final.","Enlazarla desde /quienes-somos/ y desde la home."],
+hecho:"Landing publicada con ≥ 1.200 palabras únicas y CTA."},
+
+{id:"S2.2",p:2,area:"seo",titulo:"Quitar a la home el foco de las ciudades",url:"/",esfuerzo:"Medio · 3 h",plazo:"Semanas 3–4",impacto:"Resuelve 5 canibalizaciones entre la home y las landings.",depende:"—",
+pasos:["Revisar H1 y H2 de la home: que no mencionen Sevilla, Cádiz ni Málaga.","Crear un bloque «Dónde trabajamos» con enlaces de anchor local («adiestrador de perros en Sevilla», «adiestramiento canino en Cádiz», etc.).","Quitar «perros de asistencia» de H1/H2 (va a su propia página, S2.3) y dejar solo una mención con enlace.","Title de la home: «Adiestrador de perros profesional | Perro Asistencia»."],
+hecho:"Home sin ciudades en H1/H2 y con el bloque de enlaces locales."},
+
+{id:"S2.3",p:2,area:"seo",titulo:"Convertir /perros-de-asistencia/ en la página principal del tema",url:"/perros-de-asistencia/",esfuerzo:"Alto · 6 h",plazo:"Semanas 4–5",impacto:"«perros de asistencia» (390–590/mes): posición 27 → 10–15.",depende:"S2.2",
+pasos:["Secciones: tipos de perros de asistencia, proceso de selección y entrenamiento, requisitos legales (Ley 4/2017 de Andalucía), plazos, precio orientativo, FAQ.","Enlazar a: perro lazarillo, discapacidad visual, movilidad reducida, selección del perro guía, perro de alerta.","Cada una de esas páginas enlaza de vuelta con el anchor «perros de asistencia»."],
+hecho:"Página ampliada y enlazada en ambos sentidos."},
+
+{id:"S2.4",p:2,area:"seo",titulo:"Rehacer la landing de Sevilla",url:"/adiestramiento-canino-sevilla/",esfuerzo:"Alto · 5 h",plazo:"Semanas 5–6",impacto:"Top 5 en las 8 variantes de «adiestrador … sevilla» (~2.000 búsquedas/mes).",depende:"T6.4",
+pasos:["H1: «Adiestrador de perros en Sevilla».","Texto único de ≥ 1.200 palabras (hoy se parece un 46 % al de Cádiz).","Zonas o barrios atendidos y si es a domicilio.","Problemas que resolvemos, método, precio orientativo con enlace a /pack-sesiones/.","Casos reales de Sevilla con fotos, FAQ local y CTA en tres puntos.","Enlazarla desde 10 posts con anchor local."],
+hecho:"Landing publicada y enlazada desde 10 posts."},
+
+{id:"S2.5",p:2,area:"seo",titulo:"Convertir /pack-sesiones/ en la página de precios",url:"/pack-sesiones/",esfuerzo:"Medio · 4 h",plazo:"Semanas 5–6",impacto:"«precios adiestramiento canino» (170–590/mes): posición 49 → top 15.",depende:"T2.4",
+pasos:["H1: «Precios de adiestramiento canino en Cádiz, Sevilla y Málaga».","Tabla de precios visible: sesión suelta, packs, a domicilio, perros de asistencia.","Qué incluye cada pack.","FAQ: «¿Cuánto cuesta adiestrar un perro?», «¿Cuántas sesiones hacen falta?».","Botón de WhatsApp destacado."],
+hecho:"Página con tabla de precios, FAQ y CTA."},
+
+{id:"S2.6",p:2,area:"seo",titulo:"Reorientar /adiestramiento-social/ a «adiestramiento respetuoso»",url:"/adiestramiento-social/",esfuerzo:"Medio · 2 h",plazo:"Semana 6",impacto:"Resuelve la canibalización con la home en «adiestramiento respetuoso».",depende:"—",
+pasos:["Title y H1: «Adiestramiento canino respetuoso (en positivo)».","Explicar el método: qué es, en qué se diferencia, ejemplos.","Enlazarla desde la home con el anchor «adiestramiento canino respetuoso»."],
+hecho:"Página reorientada y enlazada desde la home."},
+
+{id:"S2.7",p:2,area:"seo",titulo:"Rehacer las landings de Cádiz y Málaga",url:"/adiestramiento-canino-cadiz/ · /adiestramiento-canino-malaga/",esfuerzo:"Alto · 8 h",plazo:"Semanas 6–8",impacto:"Cádiz al top 3; Málaga al top 10.",depende:"T6.4",
+pasos:["Aplicar la misma plantilla que Sevilla (S2.4) con texto único para cada ciudad.","Cádiz: aprovechar que ya está en posición 9 para «adiestrador canino cádiz».","Málaga: añadir casos y zonas reales; si no hay servicio real en Málaga, valorar si mantener la página."],
+hecho:"Las dos landings rehechas."},
+
+{id:"S2.8",p:2,area:"seo",titulo:"Autor real y revisión veterinaria (E-E-A-T)",esfuerzo:"Medio · 4 h",plazo:"Semanas 6–8",impacto:"Señales de experiencia y confianza en todo el blog.",depende:"—",
+pasos:["Crear el usuario del adiestrador (nombre real) y reasignarle los posts de «admin».","Biografía: foto, titulaciones, años de experiencia, perros atendidos, colaboración en radio.","Activar caja de autor al final de cada post.","En posts de salud (sarro, coccidiosis, procesionaria, alergias): «Revisado por [veterinario colegiado]» y fecha de revisión."],
+hecho:"Autor visible en el 100 % de los posts."},
+
+{id:"S2.9",p:2,area:"seo",titulo:"Reescribir titles y metas del resto del sitio",esfuerzo:"Alto · 2 h por lote",plazo:"Semanas 6–12",impacto:"CTR medio del 0,7 % al 1,5 %.",depende:"—",
+pasos:["Exportar de GSC las páginas ordenadas por impresiones.","Lotes de 20 URLs, de más a menos impresiones.","Reglas: keyword al principio, 50–60 caracteres, sin «【 】», «▷», «lll➤» ni «✅».","Meta de 140–155 caracteres con beneficio concreto; en servicios, CTA («Valoración gratuita por WhatsApp»).","Registrar la fecha de cada lote."],
+hecho:"Todas las URLs revisadas."},
+
+{id:"S2.10",p:2,area:"seo",titulo:"Optimizar las URLs en posiciones 6–20",esfuerzo:"Medio · 2 h por URL",plazo:"Semanas 6–12",impacto:"+5–8 keywords en el top 10.",depende:"—",
+pasos:["URLs: /los-instintos-desarrollado-en-el-perro/ (corregir a «desarrollados»), /prevencion-miedos-doberman-cachorro/, /adiestramiento-canino-malaga/ y las que GSC muestre en 6–20.","Para cada una: TF-IDF de DinoRank con su keyword y cubrir los términos que falten.","Usar las preguntas de «Otras preguntas de los usuarios» de Google como H2.","Añadir FAQ y ALT en imágenes."],
+hecho:"Lote de URLs optimizado y fechado."},
+
+// ───────────── P3 · DESARROLLO ─────────────
+{id:"T10.2",p:3,area:"dev",titulo:"Redirecciones de las entrevistas de radio",esfuerzo:"Bajo · 30 min por lote",plazo:"Meses 2–3",impacto:"Alto: recuperar el long tail perdido.",depende:"Hoja de fusión de SEO (S3.3)",
+pasos:["Recibir de SEO la lista de cada lote (10 URLs) con su destino.","Crear las 301 en Rank Math → Redirecciones.","Pasar las entrevistas a borrador.","Quitar del sitemap y comprobar que no hay cadenas de redirecciones."],
+hecho:"Lote redirigido sin cadenas."},
+
+{id:"T10.3",p:3,area:"dev",titulo:"Maquetar las páginas nuevas que defina SEO",esfuerzo:"Medio",plazo:"Meses 2–3",impacto:"Alto: nuevas páginas de servicio.",depende:"Contenidos de SEO",
+pasos:["Crear las páginas (a domicilio, ansiedad, modificación de conducta, residencia) con la plantilla de landing.","Añadir el schema «Service» como en T6.4.","Incluirlas en el menú si SEO lo indica."],
+hecho:"Páginas publicadas e indexadas."},
+
+{id:"T11.1",p:3,area:"dev",titulo:"Limpiar el <head> y desactivar XML-RPC",esfuerzo:"Bajo · 30 min",plazo:"Semana 6",impacto:"Bajo: seguridad y menos enlaces basura.",depende:"—",
+pasos:["Añadir el código de abajo al functions.php del tema hijo o a un plugin de utilidades."],
+codigo:`add_filter('xmlrpc_enabled', '__return_false');
+remove_action('wp_head', 'rsd_link');
+remove_action('wp_head', 'wlwmanifest_link');
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'rest_output_link_wp_head');
+remove_action('wp_head', 'wp_oembed_add_discovery_links');
+remove_action('wp_head', 'feed_links_extra', 3);`,
+hecho:"No aparecen en el HTML de la home."},
+
+{id:"T11.2",p:3,area:"dev",titulo:"Encabezados de seguridad",esfuerzo:"Bajo · 1 h",plazo:"Semana 6",impacto:"Bajo.",depende:"—",
+pasos:["Añadir en `.htaccess` o en el panel del hosting: `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`.","Comprobar en securityheaders.com."],
+hecho:"Nota B o superior en securityheaders.com."},
+
+{id:"T11.3",p:3,area:"dev",titulo:"Ajustar robots.txt",esfuerzo:"Bajo · 10 min",plazo:"Semana 6",impacto:"Bajo.",depende:"—",
+pasos:["Añadir al robots.txt actual las líneas de abajo."],
+codigo:`Disallow: /?s=
+Disallow: /*?replytocom=`,
+hecho:"robots.txt actualizado."},
+
+{id:"T11.4",p:3,area:"dev",titulo:"Actualizar llms.txt",esfuerzo:"Bajo · 30 min",plazo:"Semana 6",impacto:"Bajo: ayuda a los buscadores con IA.",depende:"T7.1",
+pasos:["Editar /llms.txt: descripción del negocio, servicios, landings de ciudad, precios y contacto, con sus URLs."],
+hecho:"Archivo revisado."},
+
+{id:"T2.5",p:3,area:"dev",titulo:"Validar Core Web Vitals en Search Console",esfuerzo:"Bajo",plazo:"Mes 2",impacto:"Alto: confirma la mejora de velocidad con datos reales.",depende:"T2 y T9",
+pasos:["Esperar 28 días desde los cambios de velocidad.","GSC → Experiencia → Core Web Vitals (móvil).","Si alguna métrica sigue en rojo, revisar las URLs que GSC señala."],
+hecho:"LCP < 2,5 s, INP < 200 ms y CLS < 0,1 en móvil."},
+
+// ───────────── P3 · SEO ─────────────
+{id:"S3.1",p:3,area:"seo",titulo:"Crear la página de adiestramiento a domicilio",esfuerzo:"Alto",plazo:"Mes 3",impacto:"~400 búsquedas/mes transaccionales (Noblecan está en posición 1).",depende:"T10.3",
+pasos:["URL: /adiestramiento-canino-a-domicilio/.","Keywords: adiestrador canino a domicilio, adiestramiento canino a domicilio, adiestrador de perros a domicilio.","Contenido: cómo funciona, zonas, precios, qué se trabaja, casos, FAQ, CTA.","Enlazarla desde la home, las landings de ciudad y el menú."],
+hecho:"Página publicada y enlazada."},
+
+{id:"S3.2",p:3,area:"seo",titulo:"Crear el pilar «Ansiedad en perros»",esfuerzo:"Alto",plazo:"Mes 3",impacto:"Resuelve la canibalización entre 5 posts de ansiedad.",depende:"T10.3",
+pasos:["URL: /ansiedad-en-perros/.","Resumen de cada tipo (separación, comida, coche, miedos, fobias) con enlace a su post.","Cada post de ansiedad enlaza de vuelta al pilar.","Valorar fusionar /la-ansiedad-en-el-perro/ con el pilar (301)."],
+hecho:"Pilar publicado con enlaces en ambos sentidos."},
+
+{id:"S3.3",p:3,area:"seo",titulo:"Consolidar las 58 entrevistas de radio",esfuerzo:"Alto",plazo:"Meses 2–5",impacto:"Principal palanca para recuperar el long tail perdido en oct-nov 2025.",depende:"Desarrollo aplica los 301 (T10.2)",
+pasos:["Lista completa: anexo `entrevistas-radio.txt` del repositorio.","Por cada tema con post equivalente (agorafobia, síndrome de furia, ansiedad en el coche, alzada, la llamada, perro excitable, agresividad, dependencia, alergias…): incrustar el audio en el post principal con una sección «Lo explicamos en la radio» y un resumen.","Entrevistas sin post equivalente pero útiles: transcribir y convertir en post.","Entrevistas sin texto ni tráfico (incluidas las de COVID): pasar a `noindex`.","Enviar a desarrollo cada lote de 10 con su destino para los 301."],
+hecho:"Las 58 URLs resueltas (fusionadas, convertidas o en noindex)."},
+
+{id:"S3.4",p:3,area:"seo",titulo:"Organizar el blog en páginas pilar",esfuerzo:"Alto",plazo:"Meses 3–6",impacto:"Autoridad temática; posts sin enlaces < 20 (hoy 109).",depende:"—",
+pasos:["Pilares: problemas de conducta, ansiedad y miedos, cachorros, material de adiestramiento, razas, perros de asistencia, salud.","Cada post enlaza a su pilar (anchor exacto) y a 2 posts hermanos.","Cada pilar enlaza a todos sus posts y a 1 servicio."],
+hecho:"Pilares publicados y enlazado completo."},
+
+{id:"S3.5",p:3,area:"seo",titulo:"Página de modificación de conducta / psicólogo canino",esfuerzo:"Alto",plazo:"Mes 4",impacto:"300–400 búsquedas/mes (Evolucank9 y Noblecan la tienen).",depende:"T10.3",
+pasos:["URL: /modificacion-de-conducta-canina/ (y variante para Sevilla).","Keywords: psicólogo canino, psicólogo perro, reactividad canina, etólogo canino.","Explicar qué casos se tratan, proceso, duración y precio.","Enlazar desde los posts de agresividad, miedos y ansiedad."],
+hecho:"Página publicada y enlazada."},
+
+{id:"S3.6",p:3,area:"seo",titulo:"Contenidos por razas",esfuerzo:"Alto",plazo:"Meses 4–7",impacto:"Long tail con tracción (caniche ya en top 3).",depende:"—",
+pasos:["5–8 posts: border collie, caniche, rottweiler, doberman, american stafford, pastor alemán…","Plantilla: carácter, problemas típicos, cómo adiestrarlo, caso real, CTA.","Enlazar entre ellos y al pilar «Razas»."],
+hecho:"Clúster publicado."},
+
+{id:"S3.7",p:3,area:"seo",titulo:"Residencia canina en Ubrique",url:"/estancia-para-perros/",esfuerzo:"Medio",plazo:"Mes 4",impacto:"«residencia canina los parejos» (210/mes) + búsquedas locales.",depende:"—",
+pasos:["Reconvertir /estancia-para-perros/ (o crear /residencia-canina-ubrique/).","Title y H1 con «residencia canina en Ubrique».","Instalaciones con fotos, precios, horarios y reseñas.","Enlazar desde la landing de Ubrique y /quienes-somos/."],
+hecho:"Página publicada."},
+
+{id:"S3.8",p:3,area:"seo",titulo:"Visibilidad en buscadores con IA",esfuerzo:"Medio",plazo:"Mes 4",impacto:"Citas en AI Overviews y ChatGPT.",depende:"—",
+pasos:["Abrir cada pilar y landing con una respuesta directa de 40–60 palabras.","Usar listas y tablas para pasos, comparativas y precios.","Dar de alta prompts en DinoRank LLMs: «mejor adiestrador de perros en Cádiz», «adiestrador canino en Sevilla», «qué es un perro de asistencia», «cómo entrenar a un perro lazarillo»."],
+hecho:"Prompts dados de alta y respuestas directas publicadas."},
+
+{id:"S3.9",p:3,area:"seo",titulo:"Contenidos de oportunidad",esfuerzo:"Medio",plazo:"Meses 6–8",impacto:"~800 búsquedas/mes.",depende:"—",
+pasos:["/adiestramiento-canino-online/: curso de adiestramiento canino online (390), adiestrador canino online (390).","/olores-que-odian-los-perros/ (390/mes, Noblecan en posición 1).","Enlazarlos al servicio correspondiente."],
+hecho:"Ambos contenidos publicados."}
+];
+
+(function(){
+  const PRIO = {
+    1:{t:"Prioridad 1 · inmediata", d:"Bloquean la medición o el rastreo, o dan resultado rápido. Semanas 1–4."},
+    2:{t:"Prioridad 2 · corto plazo", d:"Arquitectura, landings y optimización de páginas en posiciones 6–20. Semanas 3–12."},
+    3:{t:"Prioridad 3 · medio plazo", d:"Consolidación de contenido, páginas nuevas y mantenimiento. Meses 2–8."}
+  };
+  const AREA = {dev:"Desarrollo / programación", seo:"SEO / contenidos"};
+  const EST = {pendiente:"Pendiente", progreso:"En progreso", terminado:"Terminado"};
+  const filtro = {area:"todas", estado:"todos"};
+  const estados = {};       // id -> {estado, por, at}
+  let db = null, user = null, canWrite = true, modo = "cargando";
+  const LS = "pa-estados-v1";
+
+  function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+  function inline(s){return esc(s).replace(/`([^`]+)`/g,"<code>$1</code>");}
+  function est(id){return (estados[id] && estados[id].estado) || "pendiente";}
+
+  // ---------- render estático (una vez) ----------
+  const main = document.getElementById("main");
+  [1,2,3].forEach(p=>{
+    const sec = document.createElement("section");
+    sec.className = "prio"; sec.dataset.p = p;
+    sec.innerHTML = `<div class="prio-head"><h2>${PRIO[p].t}</h2><p>${PRIO[p].d}</p></div>`;
+    ["dev","seo"].forEach(a=>{
+      const tareas = TAREAS.filter(t=>t.p===p && t.area===a);
+      const g = document.createElement("div");
+      g.className="group"; g.dataset.area=a;
+      g.innerHTML = `<div class="group-head"><span class="chip ${a}">${a==="dev"?"DEV":"SEO"}</span><h3>${AREA[a]}</h3><span class="count"></span></div><div class="list"></div><div class="empty" hidden>No hay tareas con este filtro.</div>`;
+      const list = g.querySelector(".list");
+      tareas.forEach(t=>list.appendChild(card(t)));
+      sec.appendChild(g);
+    });
+    main.appendChild(sec);
+  });
+
+  function card(t){
+    const el = document.createElement("article");
+    el.className="task"; el.id="tarea-"+t.id.replace(".","-"); el.dataset.id=t.id; el.dataset.area=t.area;
+    const pasos = t.pasos.map(s=>`<li>${inline(s)}</li>`).join("");
+    const code = t.codigo ? `<div class="codewrap"><pre><code>${esc(t.codigo)}</code></pre><button class="copy" type="button">Copiar</button></div>` : "";
+    el.innerHTML = `
+      <div class="t-top">
+        <div style="min-width:0">
+          <div class="t-id">${t.id}</div>
+          <div class="t-title">${esc(t.titulo)}</div>
+          ${t.url?`<div class="t-url">${esc(t.url)}</div>`:""}
+          <div class="chips">
+            <span class="chip p${t.p}">P${t.p}</span>
+            <span class="chip ${t.area}">${t.area==="dev"?"Desarrollo":"SEO"}</span>
+            <span class="chip">${esc(t.esfuerzo)}</span>
+            <span class="chip">${esc(t.plazo)}</span>
+            ${t.backup?'<span class="chip warn">Copia de seguridad antes</span>':""}
+          </div>
+        </div>
+        <div class="status">
+          <div class="seg" role="group" aria-label="Estado de ${t.id}">
+            <button type="button" data-v="pendiente">Pendiente</button>
+            <button type="button" data-v="progreso">En progreso</button>
+            <button type="button" data-v="terminado">Terminado</button>
+          </div>
+          <div class="who"></div>
+        </div>
+      </div>
+      <details>
+        <summary>Pasos para aplicarla</summary>
+        <div class="t-body">
+          <dl class="kv">
+            <dt>Impacto</dt><dd>${inline(t.impacto)}</dd>
+            <dt>Depende de</dt><dd>${inline(t.depende)}</dd>
+          </dl>
+          <h4>Pasos</h4>
+          <ol>${pasos}</ol>
+          ${code}
+          <div class="done-crit"><b>Se da por terminada cuando:</b> ${inline(t.hecho)}</div>
+        </div>
+      </details>`;
+    el.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>cambiar(t.id,b.dataset.v)));
+    const cp = el.querySelector(".copy");
+    if(cp) cp.addEventListener("click",()=>{
+      const txt = t.codigo;
+      const ok = ()=>{cp.textContent="Copiado"; setTimeout(()=>cp.textContent="Copiar",1500);};
+      try{ navigator.clipboard.writeText(txt).then(ok,()=>selectPre(el)); }catch(e){ selectPre(el); }
+    });
+    return el;
+  }
+  function selectPre(el){const r=document.createRange();r.selectNodeContents(el.querySelector("pre"));const s=getSelection();s.removeAllRanges();s.addRange(r);}
+
+  // ---------- render dinámico ----------
+  async function pintar(){
+    const ids = [...new Set(Object.values(estados).map(e=>e.por).filter(Boolean))];
+    let perfiles = {};
+    if(user && ids.length){ try{ perfiles = await user.profiles(ids); }catch(e){} }
+    document.querySelectorAll(".task").forEach(el=>{
+      const id = el.dataset.id, e = est(id);
+      el.dataset.estado = e;
+      el.querySelectorAll(".seg button").forEach(b=>{
+        b.setAttribute("aria-pressed", b.dataset.v===e ? "true":"false");
+        b.disabled = !canWrite;
+      });
+      const info = estados[id], who = el.querySelector(".who");
+      if(info && info.at){
+        const n = info.por && perfiles[info.por] ? (perfiles[info.por].name || "Alguien") : "";
+        const f = new Date(info.at).toLocaleDateString("es-ES",{day:"numeric",month:"short"});
+        who.textContent = (n ? n+" · " : "") + f;
+      } else who.textContent = "";
+      const visible = (filtro.area==="todas"||el.dataset.area===filtro.area) && (filtro.estado==="todos"||e===filtro.estado);
+      el.hidden = !visible;
+    });
+    document.querySelectorAll(".group").forEach(g=>{
+      const all = g.querySelectorAll(".task"), vis = [...all].filter(x=>!x.hidden);
+      const done = [...all].filter(x=>x.dataset.estado==="terminado").length;
+      g.querySelector(".count").textContent = `${done}/${all.length} terminadas`;
+      g.hidden = filtro.area!=="todas" && g.dataset.area!==filtro.area;
+      g.querySelector(".empty").hidden = vis.length>0;
+    });
+    resumen();
+  }
+
+  function cuenta(lista){
+    const c={pendiente:0,progreso:0,terminado:0};
+    lista.forEach(t=>c[est(t.id)]++); return c;
+  }
+  function barra(c,n){
+    return `<div class="bar" aria-hidden="true"><i class="d" style="width:${c.terminado/n*100}%"></i><i class="g" style="width:${c.progreso/n*100}%"></i></div>`;
+  }
+  function resumen(){
+    const tot = cuenta(TAREAS), n = TAREAS.length;
+    const fila = (lbl,lista)=>{const c=cuenta(lista);return `<div class="row"><span>${lbl}</span>${barra(c,lista.length)}<span>${c.terminado}/${lista.length}</span></div>`;};
+    document.getElementById("summary").innerHTML = `
+      <div class="sum"><h2>Avance total</h2>
+        <div class="big">${Math.round(tot.terminado/n*100)} %<small>${tot.terminado} de ${n} terminadas</small></div>
+        ${barra(tot,n)}
+        <div class="legend"><span><i style="background:var(--st-done)"></i>Terminado ${tot.terminado}</span><span><i style="background:var(--st-prog)"></i>En progreso ${tot.progreso}</span><span><i style="background:var(--st-pend-bg);border:1px solid var(--line)"></i>Pendiente ${tot.pendiente}</span></div>
+      </div>
+      <div class="sum"><h2>Por prioridad</h2><div class="rows">
+        ${fila("P1",TAREAS.filter(t=>t.p===1))}${fila("P2",TAREAS.filter(t=>t.p===2))}${fila("P3",TAREAS.filter(t=>t.p===3))}
+      </div></div>
+      <div class="sum"><h2>Por responsable</h2><div class="rows">
+        ${fila("Desarrollo",TAREAS.filter(t=>t.area==="dev"))}${fila("SEO",TAREAS.filter(t=>t.area==="seo"))}
+      </div></div>`;
+  }
+
+  // ---------- filtros ----------
+  document.querySelectorAll(".chipbtn").forEach(b=>b.addEventListener("click",()=>{
+    filtro[b.dataset.f]=b.dataset.v;
+    document.querySelectorAll(`.chipbtn[data-f="${b.dataset.f}"]`).forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
+    try{ localStorage.setItem("pa-filtro",JSON.stringify(filtro)); }catch(e){}
+    pintar();
+  }));
+  try{
+    const f = JSON.parse(localStorage.getItem("pa-filtro")||"null");
+    if(f){ Object.assign(filtro,f);
+      document.querySelectorAll(".chipbtn").forEach(x=>x.setAttribute("aria-pressed", filtro[x.dataset.f]===x.dataset.v?"true":"false")); }
+  }catch(e){}
+
+  // ---------- estado: compartido (db) o local ----------
+  function sync(cls,txt){const s=document.getElementById("sync");s.className="sync "+cls;document.getElementById("syncText").textContent=txt;}
+  function cargarLocal(){
+    try{ Object.assign(estados, JSON.parse(localStorage.getItem(LS)||"{}")); }catch(e){}
+  }
+  function guardarLocal(){ try{ localStorage.setItem(LS, JSON.stringify(estados)); }catch(e){} }
+
+  async function cambiar(id,v){
+    if(!canWrite || est(id)===v) return;
+    const prev = estados[id];
+    const me = user ? await user.id() : null;
+    estados[id] = {estado:v, por:me, at:new Date().toISOString()};
+    pintar();
+    if(modo==="db"){
+      try{ await db.doc("estados/"+id).set({estado:v, por:me, at:estados[id].at}); }
+      catch(e){
+        if(prev) estados[id]=prev; else delete estados[id];
+        if(e && e.code==="invalid_argument"){ canWrite=false; sync("local","Solo lectura: no tienes permiso para cambiar estados."); }
+        else sync("local","No se pudo guardar el cambio. Inténtalo de nuevo.");
+        pintar();
+      }
+    } else guardarLocal();
+  }
+
+  pintar();
+  (async function(){
+    if(!window.claude || !window.claude.use){ modo="local"; cargarLocal(); sync("local","El estado se guarda solo en este navegador."); pintar(); return; }
+    try{ [db,user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]); }catch(e){}
+    if(!db){ modo="local"; cargarLocal(); sync("local","El estado se guarda solo en este navegador."); pintar(); return; }
+    modo="db";
+    if(user){ const w = await user.can("data.write"); if(w===false){ canWrite=false; } }
+    const timer = setTimeout(()=>sync("local","No se puede conectar con el estado compartido todavía."),10000);
+    db.collection("estados").onSnapshot(snap=>{
+      if(!snap.metadata.fromCache){ clearTimeout(timer); sync("ok", canWrite ? "Estado compartido: lo ven todas las personas con acceso." : "Estado compartido · solo lectura."); }
+      for(const k in estados) delete estados[k];
+      snap.docs.forEach(d=>{ const x=d.data(); if(x && EST[x.estado]) estados[d.id]=x; });
+      pintar();
+    }, err=>{
+      clearTimeout(timer);
+      sync("local","Se perdió la conexión con el estado compartido. Recarga la página más tarde.");
+    });
+  })();
+})();
+</script>
