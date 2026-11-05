@@ -146,7 +146,7 @@ gtag('consent','default',{
 hecho:"Tag Assistant muestra el consentimiento correcto antes y después de aceptar."},
 
 {id:"T1.2",p:1,area:"dev",titulo:"Crear eventos de conversión (teléfono, WhatsApp, formulario)",esfuerzo:"Bajo · 2 h",plazo:"Semana 1",impacto:"Muy alto: medir los leads por primera vez.",depende:"T1.1",
-pasos:["Añadir el script de abajo en el pie de todas las páginas (o crear las mismas reglas en GTM).","Si el formulario no es Contact Form 7, usar el evento de «envío correcto» de su plugin.","En GA4 → Administrar → Eventos, marcar `click_tel`, `click_whatsapp` y `form_submit` como eventos clave.","Probar los tres en DebugView."],
+pasos:["Ojo: hoy la web no tiene enlaces `tel:` ni de WhatsApp clicables. Crear primero los botones de llamada y WhatsApp (cabecera, landings y bloque de CTA) o estos eventos no registrarán nada.","Añadir el script de abajo en el pie de todas las páginas (o crear las mismas reglas en GTM).","Si el formulario no es Contact Form 7, usar el evento de «envío correcto» de su plugin.","En GA4 → Administrar → Eventos, marcar `click_tel`, `click_whatsapp` y `form_submit` como eventos clave.","Probar los tres en DebugView."],
 codigo:`document.addEventListener('click', function(e){
   const a = e.target.closest('a'); if(!a) return;
   const h = a.getAttribute('href') || '';
@@ -308,7 +308,7 @@ hecho:"Ratio GA4/GSC ≥ 0,85."},
 
 // ───────────── P2 · SEO ─────────────
 {id:"S2.1",p:1,area:"seo",titulo:"Rehacer la landing de Ubrique (sede)",url:"/adiestramiento-canino-ubrique/",esfuerzo:"Medio · 4 h",plazo:"Semanas 1–2",impacto:"Hoy no rankea en su propia ciudad → objetivo top 3.",depende:"— (T6.1 la complementa con el schema local)",
-pasos:["Title: «Adiestrador canino en Ubrique | Perro Asistencia (centro y residencia)».","H1: «Adiestrador de perros en Ubrique».","Primer párrafo: qué se ofrece, a quién y dónde, en 2–3 frases.","Añadir dirección física, mapa y relación con la residencia canina.","Secciones: zonas atendidas (Sierra de Cádiz), problemas que resolvemos (con enlaces al blog), método en 3–4 pasos, precio orientativo, testimonios con nombre del perro, FAQ local.","CTA de WhatsApp y llamada arriba, a mitad y al final.","Enlazarla desde /quienes-somos/ y desde la home."],
+pasos:["Title: «Adiestrador canino en Ubrique y Sierra de Cádiz | Perro Asistencia».","H1: «Adiestrador de perros en Ubrique».","Primer párrafo: qué se ofrece, a quién y dónde, en 2–3 frases.","Si hay local abierto al público, añadir dirección y mapa; si el servicio es a domicilio, nombrar los municipios atendidos (El Bosque, Benaocaz, Grazalema, Prado del Rey…).","Añadir botones clicables de llamada (`tel:+34622110221`) y WhatsApp (`https://wa.me/34622110221`): hoy la página no tiene ninguno.","Secciones: zonas atendidas (Sierra de Cádiz), problemas que resolvemos (con enlaces al blog), método en 3–4 pasos, precio orientativo, testimonios con nombre del perro, FAQ local.","CTA de WhatsApp y llamada arriba, a mitad y al final.","Enlazarla desde /quienes-somos/ (hoy rankea más que la landing para «adiestrador ubrique») y desde la home."],
 hecho:"Landing publicada con ≥ 1.200 palabras únicas y CTA."},
 
 {id:"S2.2",p:1,area:"seo",titulo:"Quitar a la home el foco de las ciudades",url:"/",esfuerzo:"Medio · 3 h",plazo:"Semanas 2–3",impacto:"Resuelve 5 canibalizaciones entre la home y las landings.",depende:"—",
@@ -417,8 +417,8 @@ hecho:"Página publicada y enlazada."},
 pasos:["5–8 posts: border collie, caniche, rottweiler, doberman, american stafford, pastor alemán…","Plantilla: carácter, problemas típicos, cómo adiestrarlo, caso real, CTA.","Enlazar entre ellos y al pilar «Razas»."],
 hecho:"Clúster publicado."},
 
-{id:"S3.7",p:3,area:"seo",titulo:"Residencia canina en Ubrique",url:"/estancia-para-perros/",esfuerzo:"Medio",plazo:"Mes 4",impacto:"«residencia canina los parejos» (210/mes) + búsquedas locales.",depende:"—",
-pasos:["Reconvertir /estancia-para-perros/ (o crear /residencia-canina-ubrique/).","Title y H1 con «residencia canina en Ubrique».","Instalaciones con fotos, precios, horarios y reseñas.","Enlazar desde la landing de Ubrique y /quienes-somos/."],
+{id:"S3.7",p:3,area:"seo",titulo:"Residencia canina en Ubrique",url:"/estancia-para-perros/",esfuerzo:"Medio",plazo:"Mes 4",impacto:"Solo si el cliente ofrece residencia o guardería: búsquedas «residencia canina» + Ubrique / Sierra de Cádiz. «Los Parejos» es otro centro (Antequera), no es una keyword propia.",depende:"—",
+pasos:["Reconvertir /estancia-para-perros/ (o crear /residencia-canina-ubrique/).","Title y H1 con «residencia canina en Ubrique».","Instalaciones con fotos, precios, horarios y reseñas.","Enlazar desde la landing de Ubrique y /quienes-somos/.","Antes de empezar, confirmar con el cliente que ofrece este servicio."],
 hecho:"Página publicada."},
 
 {id:"S3.8",p:3,area:"seo",titulo:"Visibilidad en buscadores con IA",esfuerzo:"Medio",plazo:"Mes 4",impacto:"Citas en AI Overviews y ChatGPT.",depende:"—",
