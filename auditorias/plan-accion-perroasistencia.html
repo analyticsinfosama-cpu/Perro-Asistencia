@@ -68,7 +68,7 @@ li.task{border-top:1px solid var(--line)}
 li[data-s="terminado"] .title{text-decoration:line-through;text-decoration-thickness:1px;color:var(--muted)}
 .sub{font-size:13px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .pr{font:700 11px/1 var(--font);padding:4px 7px;border-radius:99px;letter-spacing:.02em}
-.pr.alta{color:var(--alta);background:var(--alta-bg)} .pr.media{color:var(--media);background:var(--media-bg)} .pr.baja{color:var(--baja);background:var(--baja-bg)}
+.pr.blk{color:var(--fg);background:var(--media-bg);border:1px dashed var(--media)} .pr.alta{color:var(--alta);background:var(--alta-bg)} .pr.media{color:var(--media);background:var(--media-bg)} .pr.baja{color:var(--baja);background:var(--baja-bg)}
 .url{font:500 12px/1.3 var(--mono);overflow-wrap:anywhere}
 .state{font:700 12.5px/1 var(--font);padding:6px 9px;border-radius:7px;white-space:nowrap;color:var(--muted);background:var(--hover)}
 li[data-s="progreso"] .state{color:var(--prog);background:var(--prog-bg)}
@@ -201,15 +201,15 @@ hecho:"Los estáticos se sirven desde el CDN."},
 pasos:["Instalar Query Monitor y abrir `/pack-sesiones/` y una URL de `/tag/`.","Identificar consultas lentas y plugins con más tiempo de carga.","Desactivar o sustituir el plugin culpable, o cargarlo solo donde haga falta."],
 hecho:"/pack-sesiones/ carga en menos de 2,5 s."},
 
-{id:"T6.1",p:1,area:"dev",titulo:"Schema de negocio local con la sede de Ubrique",esfuerzo:"Bajo · 1 h",plazo:"Semana 2",impacto:"Alto: mejor visibilidad en el mapa y en búsquedas locales.",depende:"Dirección confirmada por el cliente",
+{id:"T6.1",p:1,bloqueo:"Falta que el cliente confirme la dirección de la sede, el horario y el enlace a su ficha de Google.",area:"dev",titulo:"Schema de negocio local con la sede de Ubrique",esfuerzo:"Bajo · 1 h",plazo:"Semana 2",impacto:"Alto: mejor visibilidad en el mapa y en búsquedas locales.",depende:"Dirección confirmada por el cliente",
 pasos:["Rank Math → Títulos y metas → SEO local: tipo «ProfessionalService».","Rellenar dirección completa, código postal, teléfono, horario y coordenadas.","Añadir `areaServed`: Ubrique, provincia de Cádiz, Sevilla y Málaga.","Añadir `priceRange` y el logo.","Validar en Rich Results Test."],
 hecho:"Rich Results Test sin errores en la home."},
 
-{id:"T6.2",p:1,area:"dev",titulo:"Corregir los perfiles sociales del schema",esfuerzo:"Bajo · 15 min",plazo:"Semana 2",impacto:"Medio: Google conecta bien la marca con sus perfiles.",depende:"—",
+{id:"T6.2",p:2,area:"dev",titulo:"Corregir los perfiles sociales del schema",esfuerzo:"Bajo · 15 min",plazo:"Semana 3",impacto:"Medio: Google conecta bien la marca con sus perfiles.",depende:"—",
 pasos:["Rank Math → Títulos y metas → Social: el campo de Twitter debe ser solo el usuario o la URL completa una vez (hoy sale `https://twitter.com/https://twitter.com/AsistenciaPerro`).","Añadir Facebook, YouTube, Instagram y la ficha de Google Business Profile."],
 hecho:"El JSON-LD muestra `sameAs` válidos."},
 
-{id:"T6.3",p:1,area:"dev",titulo:"Quitar el schema «Article» de la home",esfuerzo:"Bajo · 15 min",plazo:"Semana 2",impacto:"Medio: la home se entiende como página de negocio.",depende:"—",
+{id:"T6.3",p:2,area:"dev",titulo:"Quitar el schema «Article» de la home",esfuerzo:"Bajo · 15 min",plazo:"Semana 3",impacto:"Medio: la home se entiende como página de negocio.",depende:"—",
 pasos:["Editar la página de inicio → pestaña Schema de Rank Math.","Eliminar el tipo «Artículo» y dejar «WebPage» (o ninguno: el de organización ya va global)."],
 hecho:"validator.schema.org no muestra `Article` en la home."},
 
@@ -230,7 +230,7 @@ hecho:"Title y meta publicados."},
 pasos:["Title: «Collar de impulsos para perros: cómo funciona y cuándo NO usarlo».","Meta: «Qué es el collar de impulsos estáticos, qué dice la ley, riesgos y en qué casos un adiestrador lo desaconseja. Guía honesta y sin venta.»","Registrar la fecha del cambio."],
 hecho:"Title y meta publicados."},
 
-{id:"S1.5",p:1,area:"seo",titulo:"Corregir «Icansables» y los ALT de sus imágenes",url:"/perros-incansables/",esfuerzo:"Bajo · 30 min",plazo:"Semana 1",impacto:"+5–10 clics/mes (posición 1,2, 1.278 impresiones).",depende:"—",
+{id:"S1.5",p:2,area:"seo",titulo:"Corregir «Icansables» y los ALT de sus imágenes",url:"/perros-incansables/",esfuerzo:"Bajo · 30 min",plazo:"Semana 4",impacto:"+5–10 clics/mes (posición 1,2, 1.278 impresiones).",depende:"—",
 pasos:["Corregir la errata en title y H1: «Perros incansables».","Title: «Perros incansables: el caso real de Lucas (con fotos)».","Meta: «Lucas no paraba nunca. Te contamos con fotos reales cómo canalizamos su energía y qué hacer si tu perro es incansable.»","Escribir ALT descriptivos en las 6 imágenes que no lo tienen (ej.: «Lucas, perro mestizo, corriendo en el campo»)."],
 hecho:"Sin errata y 0 imágenes sin ALT."},
 
@@ -286,7 +286,7 @@ hecho:"0 metas duplicadas en DinoRank."},
 pasos:["Exportar de DinoRank las URLs `/AAAA/MM/DD/…` sin title.","Comprobar con `curl -I` que todas devuelven 301 a la URL nueva.","Confirmar que ninguna está en el sitemap."],
 hecho:"Las 44 devuelven 301."},
 
-{id:"T10.1",p:2,area:"dev",titulo:"Redirección 301 del post de sarro duplicado",esfuerzo:"Bajo · 15 min",plazo:"Semana 3",impacto:"Alto: concentra la autoridad en una sola página de sarro.",depende:"SEO ha fusionado el contenido (S1.7)",
+{id:"T10.1",p:1,area:"dev",titulo:"Redirección 301 del post de sarro duplicado",esfuerzo:"Bajo · 15 min",plazo:"Semanas 2–3",impacto:"Alto: concentra la autoridad en una sola página de sarro.",depende:"SEO ha fusionado el contenido (S1.7)",
 pasos:["Rank Math → Redirecciones → nueva 301.","Origen `/que-sintomas-provoca-el-sarro-en-perros/` → destino `/como-afecta-el-sarro-en-perro/`.","Pasar el post antiguo a borrador.","Actualizar enlaces internos que apunten al antiguo."],
 hecho:"`curl -I` devuelve 301."},
 
@@ -307,11 +307,11 @@ pasos:["Comparar sesiones orgánicas de GA4 con clics de GSC en los mismos 14 d�
 hecho:"Ratio GA4/GSC ≥ 0,85."},
 
 // ───────────── P2 · SEO ─────────────
-{id:"S2.1",p:2,area:"seo",titulo:"Rehacer la landing de Ubrique (sede)",url:"/adiestramiento-canino-ubrique/",esfuerzo:"Medio · 4 h",plazo:"Semanas 3–4",impacto:"Hoy no rankea en su propia ciudad → objetivo top 3.",depende:"T6.1",
+{id:"S2.1",p:1,area:"seo",titulo:"Rehacer la landing de Ubrique (sede)",url:"/adiestramiento-canino-ubrique/",esfuerzo:"Medio · 4 h",plazo:"Semanas 1–2",impacto:"Hoy no rankea en su propia ciudad → objetivo top 3.",depende:"— (T6.1 la complementa con el schema local)",
 pasos:["Title: «Adiestrador canino en Ubrique | Perro Asistencia (centro y residencia)».","H1: «Adiestrador de perros en Ubrique».","Primer párrafo: qué se ofrece, a quién y dónde, en 2–3 frases.","Añadir dirección física, mapa y relación con la residencia canina.","Secciones: zonas atendidas (Sierra de Cádiz), problemas que resolvemos (con enlaces al blog), método en 3–4 pasos, precio orientativo, testimonios con nombre del perro, FAQ local.","CTA de WhatsApp y llamada arriba, a mitad y al final.","Enlazarla desde /quienes-somos/ y desde la home."],
 hecho:"Landing publicada con ≥ 1.200 palabras únicas y CTA."},
 
-{id:"S2.2",p:2,area:"seo",titulo:"Quitar a la home el foco de las ciudades",url:"/",esfuerzo:"Medio · 3 h",plazo:"Semanas 3–4",impacto:"Resuelve 5 canibalizaciones entre la home y las landings.",depende:"—",
+{id:"S2.2",p:1,area:"seo",titulo:"Quitar a la home el foco de las ciudades",url:"/",esfuerzo:"Medio · 3 h",plazo:"Semanas 2–3",impacto:"Resuelve 5 canibalizaciones entre la home y las landings.",depende:"—",
 pasos:["Revisar H1 y H2 de la home: que no mencionen Sevilla, Cádiz ni Málaga.","Crear un bloque «Dónde trabajamos» con enlaces de anchor local («adiestrador de perros en Sevilla», «adiestramiento canino en Cádiz», etc.).","Quitar «perros de asistencia» de H1/H2 (va a su propia página, S2.3) y dejar solo una mención con enlace.","Title de la home: «Adiestrador de perros profesional | Perro Asistencia»."],
 hecho:"Home sin ciudades en H1/H2 y con el bloque de enlaces locales."},
 
@@ -323,7 +323,7 @@ hecho:"Página ampliada y enlazada en ambos sentidos."},
 pasos:["H1: «Adiestrador de perros en Sevilla».","Texto único de ≥ 1.200 palabras (hoy se parece un 46 % al de Cádiz).","Zonas o barrios atendidos y si es a domicilio.","Problemas que resolvemos, método, precio orientativo con enlace a /pack-sesiones/.","Casos reales de Sevilla con fotos, FAQ local y CTA en tres puntos.","Enlazarla desde 10 posts con anchor local."],
 hecho:"Landing publicada y enlazada desde 10 posts."},
 
-{id:"S2.5",p:2,area:"seo",titulo:"Convertir /pack-sesiones/ en la página de precios",url:"/pack-sesiones/",esfuerzo:"Medio · 4 h",plazo:"Semanas 5–6",impacto:"«precios adiestramiento canino» (170–590/mes): posición 49 → top 15.",depende:"T2.4",
+{id:"S2.5",p:1,area:"seo",titulo:"Convertir /pack-sesiones/ en la página de precios",url:"/pack-sesiones/",esfuerzo:"Medio · 4 h",plazo:"Semanas 2–3",impacto:"«precios adiestramiento canino» (170–590/mes): posición 49 → top 15.",depende:"— (T2.4 mejora su velocidad)",
 pasos:["H1: «Precios de adiestramiento canino en Cádiz, Sevilla y Málaga».","Tabla de precios visible: sesión suelta, packs, a domicilio, perros de asistencia.","Qué incluye cada pack.","FAQ: «¿Cuánto cuesta adiestrar un perro?», «¿Cuántas sesiones hacen falta?».","Botón de WhatsApp destacado."],
 hecho:"Página con tabla de precios, FAQ y CTA."},
 
@@ -347,6 +347,13 @@ hecho:"Todas las URLs revisadas."},
 pasos:["URLs: /los-instintos-desarrollado-en-el-perro/ (corregir a «desarrollados»), /prevencion-miedos-doberman-cachorro/, /adiestramiento-canino-malaga/ y las que GSC muestre en 6–20.","Para cada una: TF-IDF de DinoRank con su keyword y cubrir los términos que falten.","Usar las preguntas de «Otras preguntas de los usuarios» de Google como H2.","Añadir FAQ y ALT en imágenes."],
 hecho:"Lote de URLs optimizado y fechado."},
 
+
+{id:"S1.11",p:1,area:"seo",titulo:"Optimizar la ficha de Google Business Profile",esfuerzo:"Medio · 3 h",plazo:"Semana 1",impacto:"Es lo que más pesa en búsquedas locales: aparecer en el mapa para «adiestrador de perros», «cerca de mí» y cada ciudad.",depende:"Acceso del cliente a la ficha",
+pasos:["Comprobar que la ficha existe y está reclamada y verificada por el cliente.","Categoría principal «Adiestrador de perros»; secundarias como «Residencia canina» o «Servicio para mascotas» si aplican.","Dirección de Ubrique o zonas de servicio (Ubrique, Sierra de Cádiz, Sevilla, Málaga si se atiende). Nombre, dirección y teléfono idénticos a los de la web y el schema.","Enlace web a la home o a la landing de Ubrique con UTM: `?utm_source=gbp&utm_medium=organic`.","Rellenar servicios con descripción y precio orientativo, y la descripción del negocio con las ciudades donde se trabaja.","Subir al menos 15 fotos reales (instalaciones, sesiones, perros) y añadir 2–4 al mes.","Pedir reseñas a los clientes con el enlace directo de la ficha y responder todas.","Publicar una novedad semanal (caso real, consejo, plazas disponibles)."],
+hecho:"Ficha verificada con categorías, servicios, fotos y enlace con UTM, y petición de reseñas en marcha."},
+{id:"S2.11",p:2,area:"seo",titulo:"Conseguir enlaces externos (linkbuilding local)",esfuerzo:"Alto · continuo",plazo:"Meses 1–6",impacto:"De 5 a 25–30 dominios de referencia. Sin enlaces la home no subirá en «adiestrador de perros» (2.900–3.600 búsquedas/mes).",depende:"—",
+pasos:["Directorios locales y sectoriales (Páginas Amarillas, Cylex, directorios de Ubrique y la Sierra de Cádiz, directorios de adiestradores) con nombre, dirección y teléfono idénticos a la web.","Pedir a la emisora de radio un enlace desde las páginas de las entrevistas.","Colaboraciones con veterinarias, protectoras, tiendas de mascotas y criadores de la zona.","Prensa local: casos reales y perros de asistencia son buenas noticias para medios locales.","Asociaciones y entidades de perros de asistencia.","Registrar cada enlace en DinoRank (Linkbuilding) y revisar el avance cada mes.","No comprar paquetes de enlaces masivos."],
+hecho:"25 dominios de referencia o más en DinoRank."},
 // ───────────── P3 · DESARROLLO ─────────────
 {id:"T10.2",p:3,area:"dev",titulo:"Redirecciones de las entrevistas de radio",esfuerzo:"Bajo · 30 min por lote",plazo:"Meses 2–3",impacto:"Alto: recuperar el long tail perdido.",depende:"Hoja de fusión de SEO (S3.3)",
 pasos:["Recibir de SEO la lista de cada lote (10 URLs) con su destino.","Crear las 301 en Rank Math → Redirecciones.","Pasar las entrevistas a borrador.","Quitar del sitemap y comprobar que no hay cadenas de redirecciones."],
@@ -426,8 +433,8 @@ hecho:"Ambos contenidos publicados."}
 (function(){
   // Orden de ejecución recomendado (de primero a último) en cada lista.
   const ORDEN = {
-    seo:["S1.1","S1.2","S1.3","S1.4","S1.5","S1.6","S1.8","S1.7","S1.9","S1.10","S2.2","S2.1","S2.5","S2.3","S2.4","S2.6","S2.8","S2.7","S2.9","S2.10","S3.3","S3.1","S3.2","S3.4","S3.5","S3.7","S3.8","S3.6","S3.9"],
-    dev:["T1.1","T1.2","T5.1","T4.1","T2.1","T2.2","T2.3","T2.4","T3.1","T6.1","T6.2","T6.3","T1.3","T3.2","T10.1","T7.1","T7.2","T8.1","T8.2","T6.4","T9.1","T9.3","T9.2","T1.4","T11.1","T11.3","T11.2","T11.4","T2.5","T10.2","T10.3"]
+    seo:["S1.11","S2.1","S1.9","S2.5","S2.2","S1.1","S1.2","S1.3","S1.4","S1.6","S1.7","S1.8","S1.10","S2.3","S2.4","S2.11","S2.6","S2.8","S1.5","S2.7","S2.9","S2.10","S3.3","S3.1","S3.2","S3.4","S3.5","S3.7","S3.8","S3.6","S3.9"],
+    dev:["T1.1","T1.2","T5.1","T4.1","T2.1","T2.2","T2.3","T2.4","T3.1","T10.1","T6.1","T1.3","T3.2","T6.2","T6.3","T7.1","T7.2","T8.1","T8.2","T6.4","T9.1","T9.3","T9.2","T1.4","T11.1","T11.3","T11.2","T11.4","T2.5","T10.2","T10.3"]
   };
   const BY = Object.fromEntries(TAREAS.map(t=>[t.id,t]));
   const PR = {1:["alta","Prioridad alta"],2:["media","Prioridad media"],3:["baja","Prioridad baja"]};
@@ -465,7 +472,7 @@ hecho:"Ambos contenidos publicados."}
           <span class="num">${n}</span>
           <button class="what" type="button" data-toggle="${id}" aria-expanded="${isOpen}">
             <span class="title">${esc(t.titulo)}</span>
-            <span class="sub"><span class="pr ${PR[t.p][0]}">Prioridad ${PR[t.p][0]}</span><span>Esfuerzo ${esc(t.esfuerzo.charAt(0).toLowerCase()+t.esfuerzo.slice(1))}</span>${t.url?`<span class="url">${esc(t.url)}</span>`:""}<span class="chev">›</span></span>
+            <span class="sub"><span class="pr ${PR[t.p][0]}">Prioridad ${PR[t.p][0]}</span><span>Esfuerzo ${esc(t.esfuerzo.charAt(0).toLowerCase()+t.esfuerzo.slice(1))}</span>${t.bloqueo?'<span class="pr blk">Bloqueada</span>':""}${t.url?`<span class="url">${esc(t.url)}</span>`:""}<span class="chev">›</span></span>
           </button>
           <span class="state">${ST[s]}</span>
         </div>
@@ -473,7 +480,7 @@ hecho:"Ambos contenidos publicados."}
           <div class="choose" role="group" aria-label="Cambiar estado">
             ${Object.keys(ST).map(v=>`<button type="button" data-set="${id}" data-v="${v}" aria-pressed="${s===v}">${ST[v]}</button>`).join("")}
           </div>
-          ${t.backup?'<div class="warnb">Haz una copia de seguridad completa antes de empezar esta tarea.</div>':""}
+          ${t.bloqueo?`<div class="warnb"><b>Bloqueada:</b> ${esc(t.bloqueo)}</div>`:""}${t.backup?'<div class="warnb">Haz una copia de seguridad completa antes de empezar esta tarea.</div>':""}
           <dl class="meta"><dt>Impacto</dt><dd>${inl(t.impacto)}</dd><dt>Depende de</dt><dd>${inl(t.depende)}</dd><dt>Ref.</dt><dd><code>${id}</code></dd></dl>
           <h3>Pasos</h3>
           <ol>${pasos}</ol>
